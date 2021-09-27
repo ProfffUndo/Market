@@ -22,7 +22,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
         http
                 .authorizeRequests()
                 .mvcMatchers("/").permitAll() //Разрещаем заходить на главную всем
-                .anyRequest().authenticated() //По другим запросам только с аунтификацией
+                .mvcMatchers("/products").permitAll()
+                //.anyRequest().authenticated() //По другим запросам только с аунтификацией
                 .and()
                 .csrf().disable();
     }

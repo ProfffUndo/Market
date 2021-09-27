@@ -16,7 +16,6 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Slf4j
 @Entity
 @Table(name="usr")
 public class User implements Serializable {
