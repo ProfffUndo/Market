@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -22,6 +23,11 @@ public class Product implements Serializable {
     private String description;
     private double price;
     private byte[] image; //как хранить фото?
-    private int amount; //количество товара, пока вопрос высчитывать как-то?
+    @ColumnDefault("0") //Пришлось добавить, так как не хотел делать alter table для вставки доп столбца
+    private int categoryId;
+
+    //  private int amount; //количество товара, пока вопрос высчитывать как-то?
     //характеристики? цвет/мощность...
+
+
 }

@@ -5,11 +5,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Data
 @Builder
@@ -21,9 +20,17 @@ public class User implements Serializable {
     @Id
     private String id;
     private String name;
-    private String userpic;
+    private String userpic; //Почему String?
     private String email;
     private String gender;
     private String locale;
+    private String login;
+    private String password;
+    private String phone;
     private LocalDateTime lastVisit;
+
+    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
+    @CollectionTable(name="user_role", joinColumns = @JoinColumn(name = "user_id"))
+    @Enumerated(EnumType.STRING)
+    private Set<Role> roles;
 }
