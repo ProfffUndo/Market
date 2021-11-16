@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @Data
 @Builder
@@ -20,4 +21,7 @@ public class Category implements Serializable {
     private Long id;
     private String name;
     private int categoryParentId;
+    @OneToMany
+    @JoinColumn(name = "id")
+    private List<Product> products;
 }

@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -29,4 +30,11 @@ public class Order implements Serializable {
     @CollectionTable(name="order_status", joinColumns = @JoinColumn(name = "status_id"))
     @Enumerated(EnumType.STRING)
     private Set<Status> statuses;
+
+    @OneToMany
+    @JoinColumn(name = "id")
+    private List<OrderItem> orderItems;
+
+    @ManyToOne
+    private User user;
 }

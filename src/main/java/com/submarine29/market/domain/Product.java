@@ -8,6 +8,7 @@ import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @Data
 @Builder
@@ -23,8 +24,11 @@ public class Product implements Serializable {
     private String description;
     private double price;
     private byte[] image; //как хранить фото?
-    @ColumnDefault("0") //Пришлось добавить, так как не хотел делать alter table для вставки доп столбца
-    private int categoryId;
+    @ManyToOne
+    private Category category;
+    @OneToMany
+    @JoinColumn(name = "id")
+    private List<OrderItem> orderItems;
 
     //  private int amount; //количество товара, пока вопрос высчитывать как-то?
     //характеристики? цвет/мощность...
