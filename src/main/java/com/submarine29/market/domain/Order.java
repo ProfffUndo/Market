@@ -15,7 +15,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name="torder")
+@Table(name="order")
 public class Order implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name="DefectiveItem")
+@Table(name="defective_item")
 public class DefectiveItem implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
