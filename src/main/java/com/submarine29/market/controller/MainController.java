@@ -15,7 +15,8 @@ import java.util.HashMap;
 public class MainController {
 
     @Autowired
-    public MainController() {}
+    public MainController() {
+    }
 
     @GetMapping
     public String main(Model model) {

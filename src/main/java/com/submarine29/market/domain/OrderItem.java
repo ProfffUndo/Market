@@ -18,5 +18,5 @@ public class OrderItem implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private int orderId;
+    private int count;
 }
