@@ -1,5 +1,6 @@
 package com.submarine29.market.controller;
 
+import com.submarine29.market.domain.Category;
 import com.submarine29.market.domain.Product;
 import com.submarine29.market.repo.ProductRepo;
 import org.springframework.beans.BeanUtils;

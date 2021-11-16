@@ -4,9 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @Data
 @Builder
@@ -19,4 +19,7 @@ public class Category implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
+    @OneToMany
+    @JoinColumn(name = "id")
+    private List<Product> products;
 }
