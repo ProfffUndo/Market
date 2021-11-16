@@ -16,33 +16,33 @@ public class CategoryController {
     private final CategoryRepo categoryRepo;
 
     @Autowired
-    public CategoryController (CategoryRepo categoryRepo){
+    public CategoryController(CategoryRepo categoryRepo) {
         this.categoryRepo = categoryRepo;
     }
 
     @GetMapping
-    public List<Category> list(){
+    public List<Category> list() {
         return categoryRepo.findAll();
     }
 
     @GetMapping("{id}")
-    public Category getOne(@PathVariable("id") Category category){
+    public Category getOne(@PathVariable("id") Category category) {
         return category;
     }
 
     @PostMapping
-    public Category create(@RequestBody Category category){
+    public Category create(@RequestBody Category category) {
         return categoryRepo.save(category);
     }
 
     @DeleteMapping("{id}")
-    public void delete(@PathVariable("id") Category category){
+    public void delete(@PathVariable("id") Category category) {
         categoryRepo.delete(category);
     }
 
     @PutMapping("{id}")
-    public Category update(@PathVariable("id") Category categoryFromDB, @RequestBody Category categoryNew){
-        BeanUtils.copyProperties(categoryNew,categoryFromDB,"id");
+    public Category update(@PathVariable("id") Category categoryFromDB, @RequestBody Category categoryNew) {
+        BeanUtils.copyProperties(categoryNew, categoryFromDB, "id");
         return categoryRepo.save(categoryFromDB);
     }
 }

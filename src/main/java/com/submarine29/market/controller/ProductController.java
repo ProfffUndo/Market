@@ -15,33 +15,33 @@ public class ProductController {
     private final ProductRepo productRepo;
 
     @Autowired
-    public ProductController (ProductRepo productRepo){
+    public ProductController(ProductRepo productRepo) {
         this.productRepo = productRepo;
     }
 
     @GetMapping
-    public List<Product> list(){
+    public List<Product> list() {
         return productRepo.findAll();
     }
 
     @GetMapping("{id}")
-    public Product getOne(@PathVariable("id") Product product){
+    public Product getOne(@PathVariable("id") Product product) {
         return product;
     }
 
     @PostMapping
-    public Product create(@RequestBody Product product){
+    public Product create(@RequestBody Product product) {
         return productRepo.save(product);
     }
 
     @DeleteMapping("{id}")
-    public void delete(@PathVariable("id") Product product){
+    public void delete(@PathVariable("id") Product product) {
         productRepo.delete(product);
     }
 
     @PutMapping("{id}")
-    public Product update(@PathVariable("id") Product productFromDB, @RequestBody Product productNew){
-        BeanUtils.copyProperties(productNew,productFromDB,"id");
+    public Product update(@PathVariable("id") Product productFromDB, @RequestBody Product productNew) {
+        BeanUtils.copyProperties(productNew, productFromDB, "id");
         return productRepo.save(productFromDB);
     }
 }
