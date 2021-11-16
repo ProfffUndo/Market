@@ -15,18 +15,17 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name="order")
+@Table(name = "order")
 public class Order implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private int userId;
     private LocalDateTime orderDate;
     private String comment;
     private String deliveryAddress;
 
     @ElementCollection(targetClass = Status.class, fetch = FetchType.EAGER)
-    @CollectionTable(name="order_status", joinColumns = @JoinColumn(name = "status_id"))
+    @CollectionTable(name = "order_status", joinColumns = @JoinColumn(name = "status_id"))
     @Enumerated(EnumType.STRING)
     private Set<Status> statuses;
 }

@@ -2,7 +2,6 @@ package com.submarine29.market.config;
 
 import com.submarine29.market.domain.User;
 import com.submarine29.market.repo.UserDetailsRepo;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.PrincipalExtractor;
 import org.springframework.context.annotation.Bean;
@@ -16,7 +15,7 @@ import java.time.LocalDateTime;
 @Configuration
 @EnableWebSecurity
 @EnableOAuth2Sso
-public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
+public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -29,10 +28,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
     }
 
     @Bean
-    public PrincipalExtractor principalExtractor (UserDetailsRepo userDetailsRepo){
+    public PrincipalExtractor principalExtractor(UserDetailsRepo userDetailsRepo) {
         return map -> {
             String id = (String) map.get("sub"); //Получаем ID
-            User user = userDetailsRepo.findById(id).orElseGet(()->{  //Если нашли пользователя в БД - возвращаем юзера по ИД, иначе новый юзер
+            User user = userDetailsRepo.findById(id).orElseGet(() -> {  //Если нашли пользователя в БД - возвращаем юзера по ИД, иначе новый юзер
                 User newUser = new User();
                 newUser.setId(id);
                 newUser.setName((String) map.get("name"));

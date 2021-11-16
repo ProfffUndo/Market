@@ -23,8 +23,6 @@ public class Product implements Serializable {
     private String description;
     private double price;
     private byte[] image; //как хранить фото?
-    @ColumnDefault("0") //Пришлось добавить, так как не хотел делать alter table для вставки доп столбца
-    private int categoryId;
 
     //  private int amount; //количество товара, пока вопрос высчитывать как-то?
     //характеристики? цвет/мощность...
