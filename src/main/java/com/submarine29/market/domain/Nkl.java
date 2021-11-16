@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name="Nkl")
+@Table(name="nkl")
 public class Nkl implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
