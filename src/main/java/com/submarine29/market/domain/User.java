@@ -19,7 +19,7 @@ import java.util.Set;
 @Table(name = "usr")
 public class User implements Serializable {
     @Id
-    private String id;
+    private Long id;
     private String name;
     private String userpic; //Почему String?
     private String email;
