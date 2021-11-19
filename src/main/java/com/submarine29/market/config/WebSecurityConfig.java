@@ -22,7 +22,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .mvcMatchers("/").permitAll() //Разрещаем заходить на главную всем
                 .mvcMatchers("/products").permitAll()
-                //.anyRequest().authenticated() //По другим запросам только с аунтификацией
+                .anyRequest().authenticated() //По другим запросам только с аунтификацией
                 .and()
                 .csrf().disable();
     }
@@ -30,7 +30,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public PrincipalExtractor principalExtractor(UserDetailsRepo userDetailsRepo) {
         return map -> {
-            String id = (String) map.get("sub"); //Получаем ID
+            String stringId = (String) map.get("sub");
+            Long id = Long.parseLong(stringId.substring(8)) ; //Получаем ID
             User user = userDetailsRepo.findById(id).orElseGet(() -> {  //Если нашли пользователя в БД - возвращаем юзера по ИД, иначе новый юзер
                 User newUser = new User();
                 newUser.setId(id);
