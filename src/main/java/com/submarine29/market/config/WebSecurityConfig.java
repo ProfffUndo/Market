@@ -20,7 +20,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .mvcMatchers("/", "/products").permitAll() //Разрещаем заходить на главную всем
+                .mvcMatchers("/").permitAll() //Разрещаем заходить на главную всем
                 .mvcMatchers("/products").permitAll()
                 .anyRequest().authenticated() //По другим запросам только с аунтификацией
                 .and()

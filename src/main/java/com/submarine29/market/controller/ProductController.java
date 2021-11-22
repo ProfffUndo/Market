@@ -5,7 +5,6 @@ import com.submarine29.market.domain.Product;
 import com.submarine29.market.repo.ProductRepo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,6 +17,11 @@ public class ProductController {
     @Autowired
     public ProductController(ProductRepo productRepo) {
         this.productRepo = productRepo;
+    }
+
+    @GetMapping
+    public List<Product> list() {
+        return productRepo.findAll();
     }
 
     @GetMapping("{id}")
