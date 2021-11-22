@@ -20,6 +20,16 @@ public class MainController {
 
     @GetMapping
     public String main(Model model) {
-        return "index";
+        return "main";
+    }
+
+    @GetMapping("/products")
+    public String products(Model model) {
+        return "products/list";
+    }
+
+    @GetMapping("/basket")
+    public String basket(Model model) {
+        return "basket/basket";
     }
 }
