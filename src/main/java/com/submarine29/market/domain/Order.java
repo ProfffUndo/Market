@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -32,6 +33,7 @@ public class Order implements Serializable {
 
     @OneToMany
     @JoinColumn(name = "id")
+    @JsonIgnore
     private List<OrderItem> orderItems;
 
     @ManyToOne
