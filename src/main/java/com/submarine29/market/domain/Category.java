@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
@@ -20,6 +22,7 @@ public class Category implements Serializable {
     private Long id;
     private String name;
     @OneToMany
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "category_id")
+    @JsonIgnore
     private List<Product> products;
 }
