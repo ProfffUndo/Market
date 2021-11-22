@@ -40,7 +40,7 @@ dependencies {
 	implementation 'org.projectlombok:lombok'
 	implementation 'javax.xml.bind:jaxb-api'
 	implementation 'org.springframework.session:spring-session-jdbc'
-	implementation "org.springframework.boot:spring-boot-starter-freemarker"
+	implementation "org.springframework.boot:spring-boot-starter-thymeleaf"
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}
