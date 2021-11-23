@@ -20,11 +20,6 @@ public class ProductController {
         this.productRepo = productRepo;
     }
 
-    @GetMapping("{id}")
-    public Product getOne(@PathVariable("id") Product product) {
-        return product;
-    }
-
     @PostMapping
     public Product create(@RequestBody Product product) {
         return productRepo.save(product);
