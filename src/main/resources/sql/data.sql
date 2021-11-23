@@ -1,3 +1,5 @@
+Alter table spring_session
+    ALTER column principal_name type varchar(3000);
 
 insert into category values (1,'обувь');
 insert into category values (2,'Аксессуары');
@@ -43,7 +45,7 @@ insert into product values
 insert into product values
     (10,'Итальянская помпа с давлением 15 бар. Автоматический капучинатор. Сенсорная панель управления. Защита от перегрева. Съемный поддон для сбора капель. Съемный резервуар для воды (1.8 л) Трафареты для рисунков на молочной пене. Мерная ложка-уплотнитель в комплекте. Стальная платформа для подогрева чашек. Съемный фильтр. Мощность 1400 Вт. Корпус из нержавеющей стали. Система Coffee Non-Stop более 5 чашек кофе без перерыва. Панель управления с технологией Glass Touch. Съемная насадка для молока подходит для посудомоечных машин! Индикация заполнения поддона. Резервуар для молока объемом 0.5 л. Индикация включения с подсветкой. Система самоочистки. Для получения нежной пенки в рожковых кофеварках рекомендуется использовать охлажденное молоко жирностью не менее 2,5%.',
      E'\\000','Кофеварка PCM 1535E Adore Cappuccino',17999,4);
-insert into product values
+insert into  product (id,description,image,name,price,category_id) values
     (11,'Пылесос-робот Xiaomi Mi Robot Vacuum Mop - функциональный бытовой прибор, с которым вы добьетесь идеальной чистоты в доме. Особенность устройства в поддержке влажной и сухой уборки, что позволит использовать его и для сбора мусора, и для мытья пола. Конструкция модели предполагает наличие пылесборника, объем которого равен 600 мл: периодически пылесборник необходимо опустошать. Контейнер также может быть использовать и при влажной уборке для добавления воды.',
      E'\\000','Робот-пылесос Mi Robot Vacuum-Mop Essential',11542,4);
 insert into product values
@@ -99,7 +101,6 @@ insert into product values
 insert into product values
     (27,'Электропастух Польской компании AGRI. Выполнен из радиодеталей произведённых в Германии. Перед отправкой каждый электропастух проверяется на осциллографе. Это позволяет прировнять процент брака практически к нулю.Электропастух предназначен для выгула домашних животных и птиц (коров, лошадей, собак, кроликов, грызунов, куриц, гусей, домашних птиц), а также хорошо справляется с ограждением территории от этих животных.Электропастух абсолютно безопасен для здоровья человека и животных. В момент контакта животного с электроизгородью происходит только кратковременное ощущение боли, вызванное потоком электрического импульса.',
      E'\\000','Электропастух AGRI 4000',14000,9);
-
 insert into product values
     (28,'Невероятно удобная и стильная точилка BRAUBERG. Дизайн: офисный. Серия: Jet. Материал корпуса: пластик. Материал механизма: металл. Роликовый нож: да. Количество отверстий: 1. Наличие контейнера для стружки: да. Диаметр затачиваемого карандаша: 8 мм. Высота: 95 мм. Ширина: 45 мм. Глубина: 90 мм. Основной цвет корпуса: бордовый. Дополнительный цвет корпуса: черный. Упаковка: прозрачная ПВХ-коробка.',
      E'\\000','Точилка механическая для карандашей с контейнером для стружки Brauberg',299,10);
@@ -120,26 +121,26 @@ insert into orders values (3,'звонить в домофон','г.Москва
 insert into orders values (4,'','г.Улан-Удэ, ул.Чкалова, д49 кв 13',TIMESTAMP '2022-02-18 10:00:00',0);
 insert into orders values (5,'звонить в колокол','г.Ярославль, ул.Ленина, д60В кв 73',TIMESTAMP '2021-12-24 17:30:00',0);
 
-insert into order_item values (1,2,1,4);
-insert into order_item values (2,1,1,1);
-insert into order_item values (3,1,2,2);
-insert into order_item values (4,5,2,3);
-insert into order_item values (5,2,3,6);
-insert into order_item values (6,1,3,7);
-insert into order_item values (7,9,3,8);
-insert into order_item values (8,3,3,9);
-insert into order_item values (9,10,3,13);
-insert into order_item values (10,3,4,11);
-insert into order_item values (11,1,4,16);
-insert into order_item values (12,3,4,19);
-insert into order_item values (13,2,4,20);
-insert into order_item values (14,1,5,10);
-insert into order_item values (15,5,5,22);
-insert into order_item values (16,1,5,28);
-insert into order_item values (17,6,5,1);
-insert into order_item values (18,7,1,29);
-insert into order_item values (19,1,2,14);
-insert into order_item values (20,4,1,7);
+insert into order_item values (1,2,1);
+insert into order_item values (2,1,1);
+insert into order_item values (3,1,2);
+insert into order_item values (4,5,2);
+insert into order_item values (5,2,3);
+insert into order_item values (6,1,3);
+insert into order_item values (7,2,3);
+insert into order_item values (8,3,3);
+insert into order_item values (9,5,3);
+insert into order_item values (10,3,4);
+insert into order_item values (11,1,4);
+insert into order_item values (12,3,4);
+insert into order_item values (13,2,4);
+insert into order_item values (14,1,5);
+insert into order_item values (15,5,5);
+insert into order_item values (16,1,5);
+insert into order_item values (17,3,5);
+insert into order_item values (18,4,1);
+insert into order_item values (19,1,2);
+insert into order_item values (20,3,1);
 
 
 
