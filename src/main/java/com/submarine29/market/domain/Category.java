@@ -25,4 +25,12 @@ public class Category implements Serializable {
     @JoinColumn(name = "category_id")
     @JsonIgnore
     private List<Product> products;
+
+    @Override
+    public String toString() {
+        return "Category{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }

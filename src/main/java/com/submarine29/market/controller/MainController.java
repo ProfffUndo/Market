@@ -34,9 +34,7 @@ public class MainController {
     @GetMapping("/products")
     public String products(Model model) {
 //        model.addAttribute("products", productRepo.findAll());
-        model.addAttribute("products", Arrays.asList(
-                new Product(0L, "Product 1", "Description 1", 100.01, null, null, null),
-                new Product(0L, "Product 2", "Description 2", 200.02, null, null, null)));
+        model.addAttribute("products", productRepo.findAll());
         return "products/list";
     }
 
@@ -47,8 +45,8 @@ public class MainController {
 
     @GetMapping("/products/{id}")
     public String showProduct(
-            @PathVariable int id, Model model) {
-        model.addAttribute("product", new Product());
+            @PathVariable Long id, Model model) {
+        model.addAttribute("product", productRepo.findById(id));
         return "products/show";
     }
 

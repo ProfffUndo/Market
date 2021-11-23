@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.List;
 
 @Data
@@ -31,9 +32,19 @@ public class Product implements Serializable {
     @JoinColumn(name = "id")
     @JsonIgnore
     private List<OrderItem> orderItems;
-
     //  private int amount; //количество товара, пока вопрос высчитывать как-то?
     //характеристики? цвет/мощность...
 
 
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", price=" + price +
+                ", image=" + Arrays.toString(image) +
+                ", category=" + category +
+                '}';
+    }
 }
