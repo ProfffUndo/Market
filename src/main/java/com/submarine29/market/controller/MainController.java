@@ -1,19 +1,15 @@
 package com.submarine29.market.controller;
 
-import com.submarine29.market.domain.Product;
 import com.submarine29.market.repo.ProductRepo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 
 @Controller
 @RequestMapping("/")
@@ -32,9 +28,13 @@ public class MainController {
     }
 
     @GetMapping("/products")
-    public String products(Model model) {
-//        model.addAttribute("products", productRepo.findAll());
-        model.addAttribute("products", productRepo.findAll());
+    public String products(
+            Model model,
+            @PageableDefault(sort = {"id"},direction = Sort.Direction.DESC) Pageable pageable
+    ) {
+//      model.addAttribute("products", productRepo.findAll());
+        model.addAttribute("productsPage", productRepo.findAll(pageable));
+        model.addAttribute("url","/products");
         return "products/list";
     }
 

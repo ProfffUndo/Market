@@ -1,4 +1,4 @@
-<#import "/components/common.ftlh" as c>
+<#import '../components/common.ftlh' as c>
 
 <@c.page>
 <#--    <div style="display: flex; justify-content: center; align-items: center;">-->

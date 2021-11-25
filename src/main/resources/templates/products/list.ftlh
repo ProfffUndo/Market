@@ -1,12 +1,15 @@
-<#import "/components/common.ftlh" as c>
-<#import "/css/inline.css" as css>
+<#import '../components/common.ftlh' as c>
+<#import '../css/inline.css' as css>
+<#import '../components/pager.ftl' as p>
+
 
 <@c.page>
     <form method="get">
         <a href="/products/new" class="btn btn-primary">Создать товар</a>
     </form>
     <br/>
-    <#list products as product>
+    <@p.pager url productsPage/>
+    <#list productsPage.content as product>
         <div class="card w-100">
             <div class="card-body">
                 <div class="parent">
@@ -31,3 +34,4 @@
         <br/>
     </#list>
 </@c.page>
+<@p.pager url productsPage/>
