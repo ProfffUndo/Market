@@ -1,18 +1,9 @@
 <#import '../components/common.ftlh' as c>
+<#import '../components/upsert_product.ftlh' as up>
 
 <@c.page>
-<#--    <div style="display: flex; justify-content: center; align-items: center;">-->
-        <div class="input-group mb-3">
-            <input type="text" class="form-control" placeholder="Название" aria-label="Название" aria-describedby="basic-addon1">
-        </div>
-        <br/>
-        <div class="input-group mb-3">
-            <input type="text" class="form-control" placeholder="Описание" aria-label="Описание" aria-describedby="basic-addon1">
-        </div>
-        <br/>
-        <div class="input-group mb-3">
-            <input type="text" class="form-control" placeholder="Цена" aria-label="Цена" aria-describedby="basic-addon1">
-        </div>
-
-<#--    </div>-->
+    <form action="/products/new" method="POST">
+        <@up.upsert/>
+        <input type="submit" class="btn btn-primary" value="Добавить товар">
+    </form>
 </@c.page>

@@ -15,39 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/")
 public class MainController {
 
-    private final ProductRepo productRepo;
-
-    @Autowired
-    public MainController(ProductRepo productRepo) {
-        this.productRepo = productRepo;
-    }
-
     @GetMapping
     public String main(Model model) {
         return "main";
-    }
-
-    @GetMapping("/products")
-    public String products(
-            Model model,
-            @PageableDefault(sort = {"id"},direction = Sort.Direction.DESC) Pageable pageable
-    ) {
-//      model.addAttribute("products", productRepo.findAll());
-        model.addAttribute("productsPage", productRepo.findAll(pageable));
-        model.addAttribute("url","/products");
-        return "products/list";
-    }
-
-    @GetMapping("/products/new")
-    public String newProduct() {
-        return "products/new";
-    }
-
-    @GetMapping("/products/{id}")
-    public String showProduct(
-            @PathVariable Long id, Model model) {
-        model.addAttribute("product", productRepo.findById(id));
-        return "products/show";
     }
 
     @GetMapping("/basket")
