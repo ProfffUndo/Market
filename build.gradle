@@ -41,6 +41,12 @@ dependencies {
 	implementation 'javax.xml.bind:jaxb-api'
 	implementation 'org.springframework.session:spring-session-jdbc'
 	implementation "org.springframework.boot:spring-boot-starter-freemarker"
+
+	implementation 'com.paypal.sdk:rest-api-sdk:1.14.0'
+
+
+
+
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}
