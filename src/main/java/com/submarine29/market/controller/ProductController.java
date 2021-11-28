@@ -103,8 +103,7 @@ public class ProductController {
             return errorUrl;
         }
         product.setCategory(category);
-        //productRepo.save(product); TODO: разобраться, почему не фурычит + убрать строку ниже
-        product.setId(0L);
+        productRepo.save(product); //TODO: разобраться, почему не фурычит insert
         model.addAttribute("product", product);
         return "/products/show";
     }
