@@ -24,10 +24,10 @@ public class PayPalController {
         return "main";
     }*/
 
-    @PostMapping("/pay")
-    public String payment(@ModelAttribute("order") Order order) {
+    @PostMapping("/pay/{id}")
+    public String payment(@PathVariable("id") Order order) {
         try {
-            Payment payment = service.createPayment(30.0/*order.getPrice()*/, "http://localhost:8080/" + CANCEL_URL,
+            Payment payment = service.createPayment(30.00/*order.getPrice()*/, "http://localhost:8080/" + CANCEL_URL,
                     "http://localhost:8080/" + SUCCESS_URL);
             for(Links link:payment.getLinks()) {
                 if(link.getRel().equals("approval_url")) {
