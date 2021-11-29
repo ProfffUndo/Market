@@ -1,5 +1,6 @@
 package com.submarine29.market.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,6 +20,18 @@ public class OrderItem implements Serializable {
     private Long id;
     @ManyToOne
     private Product product;
+
+    @JsonIgnore
     @ManyToOne
     private Order order;
+
+    @Override
+    public String toString() {
+        return "OrderItem{" +
+                "id=" + id +
+                ", product=" + product +
+                '}';
+    }
 }
+
+

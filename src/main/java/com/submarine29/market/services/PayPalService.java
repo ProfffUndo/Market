@@ -30,7 +30,7 @@ public class PayPalService {
         Amount amount = new Amount();
         amount.setCurrency("RUB");
         total = new BigDecimal(total).setScale(2, RoundingMode.HALF_UP).doubleValue();
-        amount.setTotal(String.format("%.2f", total));
+        amount.setTotal(String.format("%.2f", total).replace(",","."));
 
         Transaction transaction = new Transaction();
         transaction.setDescription("Payment for the order on the web site 'Market'");

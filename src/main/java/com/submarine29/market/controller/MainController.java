@@ -1,14 +1,10 @@
 package com.submarine29.market.controller;
 
-import com.submarine29.market.repo.ProductRepo;
+import com.submarine29.market.repo.OrderRepo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -20,8 +16,15 @@ public class MainController {
         return "main";
     }
 
+    @Autowired
+    private OrderRepo repo;
+
     @GetMapping("/basket")
     public String basket(Model model) {
+
+        model.addAttribute("order", repo.findById(1L).get());
         return "basket/basket";
     }
+
+
 }
