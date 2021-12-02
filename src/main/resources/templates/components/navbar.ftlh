@@ -21,7 +21,7 @@
 
         <a class="nav-link" href="/basket">Корзина</a>
         <#if user??>
-            {name}
+            ${name}
         <#else>
             Guest
         </#if>

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -46,12 +47,14 @@ public class ProductController {
         return "products/show";
     }
 
+    @PreAuthorize("hasAuthority('MANAGER')")
     @GetMapping("new")
     public String newProduct(Model model) {
         model.addAttribute("categories", categoryRepo.findAll());
         return "products/new";
     }
 
+    @PreAuthorize("hasAuthority('MANAGER')")
     @PostMapping("/new")
     public String create(@ModelAttribute("categoryName") String categoryName,
                          @Valid Product product,
@@ -60,6 +63,7 @@ public class ProductController {
         return createUpsertErrorModel("products/new", categoryName, product, bindingResult, model);
     }
 
+    @PreAuthorize("hasAuthority('MANAGER')")
     @GetMapping("{id}/edit")
     public String updateProduct(Model model, @PathVariable("id") Product product) {
         model.addAttribute("product", product);
@@ -69,6 +73,7 @@ public class ProductController {
         return "products/edit";
     }
 
+    @PreAuthorize("hasAuthority('MANAGER')")
     @PostMapping("{id}/edit")
     public String update(@ModelAttribute("categoryName") String categoryName,
                          @Valid Product product,
@@ -77,6 +82,7 @@ public class ProductController {
         return createUpsertErrorModel("products/edit", categoryName, product, bindingResult, model);
     }
 
+    @PreAuthorize("hasAuthority('MANAGER')")
     @PostMapping("{id}/delete")
     public String delete(@PathVariable("id") Product product) {
         productRepo.delete(product);

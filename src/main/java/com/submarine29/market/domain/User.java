@@ -4,19 +4,32 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
+@Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "usr")
-public class User implements Serializable {
+public class User implements UserDetails, Serializable {
+
+    /**
+     * ВНИМАТЕЛЬНО!!!
+     * Я не знаю, почему изначально класс был сериализуем. Но допустим.
+     * Я его изменил. Если убрать это, он не будет работать, потому что несовпадение со старой версией.
+     * Либо я что-то не так понял.
+     */
+    private static final long serialVersionUID = -678788959254984266L;
+
     @Id
     private Long id;
     private String name;
@@ -38,99 +51,46 @@ public class User implements Serializable {
     @JoinColumn(name = "user_id")
     private List<Order> orders;
 
-    public Long getId() {
-        return id;
+    public boolean isAdmin() {
+        return roles.contains(Role.ADMIN);
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public boolean isManager() {
+        return roles.contains(Role.MANAGER);
     }
 
-    public String getName() {
-        return name;
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return roles;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getUserpic() {
-        return userpic;
-    }
-
-    public void setUserpic(String userpic) {
-        this.userpic = userpic;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getGender() {
-        return gender;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
-
-    public String getLocale() {
-        return locale;
-    }
-
-    public void setLocale(String locale) {
-        this.locale = locale;
-    }
-
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
+    @Override
     public String getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    @Override
+    public String getUsername() {
+        return name;
     }
 
-    public String getPhone() {
-        return phone;
+    @Override
+    public boolean isAccountNonExpired() {
+        return false;
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
+    @Override
+    public boolean isAccountNonLocked() {
+        return false;
     }
 
-    public LocalDateTime getLastVisit() {
-        return lastVisit;
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return false;
     }
 
-    public void setLastVisit(LocalDateTime lastVisit) {
-        this.lastVisit = lastVisit;
-    }
-
-    public Set<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
-    }
-
-    public List<Order> getOrders() {
-        return orders;
-    }
-
-    public void setOrders(List<Order> orders) {
-        this.orders = orders;
+    @Override
+    public boolean isEnabled() {
+        return false;
     }
 }
