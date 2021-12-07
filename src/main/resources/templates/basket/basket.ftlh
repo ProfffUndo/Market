@@ -3,10 +3,35 @@
 <#import '../components/pager.ftl' as p>
 
 <@c.page>
-    ${order}
-    <form method="post" action="/basket/pay/${order.id}">
-        <input type="submit" value="Оплатить" class="btn btn-primary"/>
-    </form>
-    <br/>
-
+    <div class="parent">
+        <div class="child" style="width: 85%; float: left">
+            <table class="table table-bordered" style="width: 90%">
+                <thead>
+                <tr>
+                    <th scope="col">Название товара</th>
+                    <th scope="col">Цена</th>
+                    <th scope="col">Действия</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <#list order.orderItems as item>
+                        <tr>
+                            <td>${item.product.name}</td>
+                            <td>${item.product.price}</td>
+                            <td>
+                                <form method="post" action="">
+                                    <input type="submit" value="Удалить" class="btn btn-primary"/>
+                                </form>
+                            </td>
+                        </tr>
+                    </#list>
+                </tbody>
+            </table>
+        </div>
+        <div class="child" style="width: 15%; float: right;">
+            <form method="post" action="/basket/pay/${order.id}">
+                <input type="submit" value="Оформить заказ" class="btn btn-primary"/>
+            </form>
+        </div>
+    </div>
 </@c.page>
