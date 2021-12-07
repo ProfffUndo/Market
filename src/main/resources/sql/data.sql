@@ -142,7 +142,7 @@ insert into order_item values (18,4,1);
 insert into order_item values (19,1,2);
 insert into order_item values (20,3,1);
 
-
+create sequence product_sequence start 30 increment 1;
 
 
 
