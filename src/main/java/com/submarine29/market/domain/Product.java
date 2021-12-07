@@ -18,7 +18,8 @@ import java.util.List;
 @Table(name="product")
 public class Product implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO,
+            generator = "product_sequence")
     private Long id;
     private String name;
     @Column(length = 4000)
