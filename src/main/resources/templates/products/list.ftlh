@@ -12,9 +12,11 @@
         <div class="card w-100">
             <div class="card-body">
                 <div class="parent">
+
                     <div class="child" style="width: 20%; float: left; border: 1px solid lightgrey;">
-                        <img class="card-img-top" src="..." alt="Здесь когда-нибудь будет пикча">
+                        <img class="card-img-top img-fluid" src="${product.imagePath}" alt="Пикча">
                     </div>
+
                     <div class="child" style="width: 70%; float: left">
                         <a href="/products/${product.id}">
                             <div class="card-title" style="font-size: 20px; font-weight: bold;">${product.name}</div>

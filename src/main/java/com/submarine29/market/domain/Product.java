@@ -7,7 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.List;
 
 @Data
@@ -25,7 +24,7 @@ public class Product implements Serializable {
     @Column(length = 4000)
     private String description;
     private double price;
-    private byte[] image; //как хранить фото?
+    private String imagePath;
     @ManyToOne
     @JsonIgnore
     private Category category; //TODO выводить имя
@@ -44,7 +43,7 @@ public class Product implements Serializable {
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", price=" + price +
-                ", image=" + Arrays.toString(image) +
+                ", image=" + imagePath +
                 ", category=" + category +
                 '}';
     }
