@@ -20,19 +20,18 @@ import java.util.Set;
 @Table(name = "orders")
 public class Order implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO,
+            generator = "com_seq")
     private Long id;
     private LocalDateTime orderDate;
     private String comment;
     private String deliveryAddress;
 
-    @ElementCollection(targetClass = Status.class, fetch = FetchType.EAGER)
-    @CollectionTable(name = "order_status", joinColumns = @JoinColumn(name = "status_id"))
     @Enumerated(EnumType.STRING)
-    private Set<Status> statuses;
+    private Status status;
 
-    @OneToMany
-    @JoinColumn(name = "id")
+    @OneToMany(cascade=CascadeType.ALL)
+    @JoinColumn(name = "order_id")
     @JsonIgnore
     private List<OrderItem> orderItems;
 

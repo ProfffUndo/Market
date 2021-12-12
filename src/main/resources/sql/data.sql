@@ -115,11 +115,11 @@ insert into product values
 --все заказы привязаны к юзерам, так что добавим одного для примера
 insert into usr values (0,'example_devil@hell.com',null,TIMESTAMP '2021-11-22 17:51:16.479536','ru',null,'Сатана',null,null,null);
 
-insert into orders values (1,'заранее позвонить','Мурманская область,городской округ Александровск, Оленья Губа, д3',TIMESTAMP '2021-12-31 15:30:00',0);
-insert into orders values (2,'','Ульяновская область,ПГТ Старая Кулатка, д31',TIMESTAMP '2022-01-04 12:00:00',0);
-insert into orders values (3,'звонить в домофон','г.Москва, Каширское шоссе, д13 к1 кв 32',TIMESTAMP '2021-12-29 18:00:00',0);
-insert into orders values (4,'','г.Улан-Удэ, ул.Чкалова, д49 кв 13',TIMESTAMP '2022-02-18 10:00:00',0);
-insert into orders values (5,'звонить в колокол','г.Ярославль, ул.Ленина, д60В кв 73',TIMESTAMP '2021-12-24 17:30:00',0);
+insert into orders values (1,'заранее позвонить','Мурманская область,городской округ Александровск, Оленья Губа, д3',TIMESTAMP '2021-12-31 15:30:00','PAID',0);
+insert into orders values (2,'','Ульяновская область,ПГТ Старая Кулатка, д31',TIMESTAMP '2022-01-04 12:00:00','SENT',0);
+insert into orders values (3,'звонить в домофон','г.Москва, Каширское шоссе, д13 к1 кв 32',TIMESTAMP '2021-12-29 18:00:00','PAID',0);
+insert into orders values (4,'','г.Улан-Удэ, ул.Чкалова, д49 кв 13',TIMESTAMP '2022-02-18 10:00:00','SENT',0);
+insert into orders values (5,'звонить в колокол','г.Ярославль, ул.Ленина, д60В кв 73',TIMESTAMP '2021-12-24 17:30:00','PAID',0);
 
 insert into order_item values (1,2,1);
 insert into order_item values (2,1,1);
@@ -142,7 +142,8 @@ insert into order_item values (18,4,1);
 insert into order_item values (19,1,2);
 insert into order_item values (20,3,1);
 
-create sequence product_sequence start 30 increment 1;
+drop sequence com_seq;
+create sequence com_seq start 50 increment 1;
 
 
 
