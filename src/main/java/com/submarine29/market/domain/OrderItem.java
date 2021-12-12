@@ -16,7 +16,8 @@ import java.io.Serializable;
 @Table(name="order_item")
 public class OrderItem implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO,
+            generator = "com_seq")
     private Long id;
     @ManyToOne
     private Product product;

@@ -24,10 +24,10 @@
                         <div class="card-text">${product.description}</div>
                     </div>
                     <div class="child" style="width: 10%; float: right;">
-                        <div style="position:absolute; right: 0">
-                            <div class="card-text">${product.price}</div>
-                            <a href="#" class="btn btn-primary">В корзину</a>
-                        </div>
+                        <form method="post" action="/basket">
+                            <input type="submit" class="btn btn-primary" value="В корзину">
+                            <input type="hidden" name="product_id" value="${product.id}"/>
+                        </form>
                     </div>
                 </div>
             </div>
