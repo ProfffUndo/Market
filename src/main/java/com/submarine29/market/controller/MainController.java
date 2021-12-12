@@ -10,21 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/")
 public class MainController {
-
     @GetMapping
     public String main(Model model) {
         return "main";
     }
-
-    @Autowired
-    private OrderRepo repo;
-
-    @GetMapping("/basket")
-    public String basket(Model model) {
-
-        model.addAttribute("order", repo.findById(1L).get());
-        return "basket/basket";
-    }
-
-
 }

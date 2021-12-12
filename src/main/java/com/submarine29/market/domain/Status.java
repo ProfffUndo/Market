@@ -1,5 +1,5 @@
 package com.submarine29.market.domain;
 
 public enum Status {
-    CREATED, TRANSIT, DELIVERED
+    NEW, CONFIRMED, PAID, SENT, DELIVERED
 }
