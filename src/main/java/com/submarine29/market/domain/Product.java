@@ -19,23 +19,25 @@ import java.util.List;
 public class Product implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO,
-            generator = "product_sequence")
+            generator = "com_seq")
     private Long id;
     private String name;
     @Column(length = 4000)
     private String description;
     private double price;
     private byte[] image; //как хранить фото?
+
     @ManyToOne
     @JsonIgnore
     private Category category; //TODO выводить имя
+
     @OneToMany
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "product_id")
     @JsonIgnore
     private List<OrderItem> orderItems;
+
     //  private int amount; //количество товара, пока вопрос высчитывать как-то?
     //характеристики? цвет/мощность...
-
 
     @Override
     public String toString() {
