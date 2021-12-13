@@ -1,6 +1,7 @@
 package com.submarine29.market.controller;
 
 import com.submarine29.market.domain.Order;
+import com.submarine29.market.domain.OrderItem;
 import com.submarine29.market.repo.OrderRepo;
 import com.submarine29.market.repo.UserDetailsRepo;
 import com.submarine29.market.services.BasketService;
@@ -48,6 +49,12 @@ public class BasketController {
     @PostMapping()
     public String addProductToBasket(@ModelAttribute("product_id") Long productId){
         basketService.addProductToOrder(0L,productId);
+        return "redirect:/basket";
+    }
+
+    @PostMapping("/delete")
+    public String deleteProductFromBasket(@ModelAttribute("product_id") Long productId){
+        basketService.deleteProductFromOrder(0L,productId);
         return "redirect:/basket";
     }
 }
