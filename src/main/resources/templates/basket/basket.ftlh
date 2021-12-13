@@ -23,8 +23,9 @@
                             <td> <a href="/products/${item.product.id}">${item.product.name} </a></td>
                             <td>${item.product.price}</td>
                             <td>
-                                <form method="post" action="">
-                                    <input type="submit" value="Удалить" class="btn btn-primary"/>
+                                <form method="post" action="/basket/delete">
+                                    <input type="submit" class="btn btn-primary" value="Удалить">
+                                    <input type="hidden" name="product_id" value="${item.product.id}"/>
                                 </form>
                             </td>
                         </tr>

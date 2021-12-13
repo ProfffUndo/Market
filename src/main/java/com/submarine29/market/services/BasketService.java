@@ -72,4 +72,26 @@ public class BasketService {
         else
             return null;
     }
+
+    public void deleteProductFromOrder(Long userId, Long productId) throws SecurityException {
+        try {
+            User user = userRepo.findById(userId).get();
+            //orderItemRepo.delete(orderItem);
+            List<Order> usersOrders = orderRepo.findByUser(user);
+            Iterator<Order> iter = usersOrders.listIterator();
+            Order currentOrder;
+            while ((currentOrder = iter.next()).getStatus() != Status.NEW && iter.hasNext()) {
+            }
+            List <OrderItem> orderItems = orderItemRepo.findByOrder(currentOrder);
+
+            for (OrderItem orderItem: orderItems){
+                if (orderItem.getProduct().getId().equals(productId)){
+                    orderItemRepo.delete(orderItem);
+                }
+            }
+
+        } catch (NoSuchElementException e) {
+            throw new SecurityException("Пользователь не авторизован", e);
+        }
+    }
 }
