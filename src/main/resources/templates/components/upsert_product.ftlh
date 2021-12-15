@@ -35,7 +35,7 @@
     <input id="imgInput" type="text"
            class="form-control ${(imgError??)?string('is-invalid','')}"
            value="<#if product??>${product.imagePath}</#if>"
-           placeholder="Картинка" name="image">
+           placeholder="Картинка" name="imagePath">
     <#if priceError??>
         <div class="invalid-feedback">
             ${imgError}
