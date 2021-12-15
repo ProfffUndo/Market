@@ -7,7 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.List;
 
 @Data
@@ -18,18 +17,19 @@ import java.util.List;
 @Table(name="product")
 public class Product implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO,
+            generator = "com_seq")
     private Long id;
     private String name;
     @Column(length = 4000)
     private String description;
     private double price;
-    private byte[] image; //как хранить фото?
+    private String imagePath;
     @ManyToOne
     @JsonIgnore
     private Category category; //TODO выводить имя
     @OneToMany
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "product_id")
     @JsonIgnore
     private List<OrderItem> orderItems;
     //  private int amount; //количество товара, пока вопрос высчитывать как-то?
@@ -43,7 +43,7 @@ public class Product implements Serializable {
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", price=" + price +
-                ", image=" + Arrays.toString(image) +
+                ", image=" + imagePath +
                 ", category=" + category +
                 '}';
     }

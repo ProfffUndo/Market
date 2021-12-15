@@ -1,6 +1,8 @@
 package com.submarine29.market.controller;
 
 import com.submarine29.market.domain.Order;
+import com.submarine29.market.domain.OrderItem;
+import com.submarine29.market.domain.Status;
 import com.submarine29.market.services.PayPalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,6 +11,8 @@ import org.springframework.web.bind.annotation.*;
 import com.paypal.api.payments.Links;
 import com.paypal.api.payments.Payment;
 import com.paypal.base.rest.PayPalRESTException;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/basket")
@@ -19,15 +23,20 @@ public class PayPalController {
     public static final String SUCCESS_URL = "pay/success";
     public static final String CANCEL_URL = "pay/cancel";
 
-    /*@GetMapping("/")
-    public String home() {
-        return "main";
-    }*/
-
     @PostMapping("/pay/{id}")
     public String payment(@PathVariable("id") Order order) {
         try {
-            Payment payment = service.createPayment(30.00/*order.getPrice()*/, "http://localhost:8080/" + CANCEL_URL,
+
+            List<OrderItem> orderItems = order.getOrderItems();
+            double total = 0.00;
+
+            order.setStatus(Status.CONFIRMED);
+
+            for (OrderItem orderItem : orderItems){
+                total = total + orderItem.getProduct().getPrice();
+            }
+
+            Payment payment = service.createPayment(total, "http://localhost:8080/" + CANCEL_URL,
                     "http://localhost:8080/" + SUCCESS_URL);
             for(Links link:payment.getLinks()) {
                 if(link.getRel().equals("approval_url")) {

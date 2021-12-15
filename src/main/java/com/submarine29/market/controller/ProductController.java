@@ -35,8 +35,12 @@ public class ProductController {
             Model model,
             @PageableDefault(sort = {"id"},direction = Sort.Direction.DESC) Pageable pageable
     ) {
-        model.addAttribute("productsPage", productRepo.findAll(pageable));
-        model.addAttribute("url","/products");
+        if (pageable.getPageSize() > 50 || pageable.getPageSize() < 1) {
+            return "redirect:/products/?page=0&size=50";
+        } else {
+            model.addAttribute("productsPage", productRepo.findAll(pageable));
+            model.addAttribute("url", "/products");
+        }
         return "products/list";
     }
 
@@ -109,8 +113,9 @@ public class ProductController {
             return errorUrl;
         }
         product.setCategory(category);
-        productRepo.save(product); //TODO: разобраться, почему не фурычит insert
+        productRepo.save(product);
         model.addAttribute("product", product);
         return "/products/show";
     }
+
 }
