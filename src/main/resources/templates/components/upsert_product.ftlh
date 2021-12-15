@@ -31,6 +31,17 @@
         </div>
     </#if>
     <br/>
+    <label for="imgInput">Введите ссылку на картинку</label>
+    <input id="imgInput" type="text"
+           class="form-control ${(imgError??)?string('is-invalid','')}"
+           value="<#if product??>${product.imagePath}</#if>"
+           placeholder="Картинка" name="image">
+    <#if priceError??>
+        <div class="invalid-feedback">
+            ${imgError}
+        </div>
+    </#if>
+    <br/>
     <div class="form-group">
         <label for="categorySelect">Выберите категорию товара</label>
         <select class="form-control ${(categoryError??)?string('is-invalid','')}" id="categorySelect" name="categoryName">

@@ -21,12 +21,6 @@ public class MainController {
     @Autowired
     private OrderRepo repo;
 
-    @GetMapping("/basket")
-    public String basket(Model model) {
-        model.addAttribute("order", repo.findById(1L).get());
-        return "basket/basket";
-    }
-
     @GetMapping("/profile")
     public String profile(Model model, @AuthenticationPrincipal User user) {
         model.addAttribute("user", user);

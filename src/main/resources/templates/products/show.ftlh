@@ -1,5 +1,6 @@
 <#import '../components/common.ftlh' as c>
 <#import '../css/inline.css' as css>
+<#include "../components/security.ftlh">
 
 <@c.page>
     <div class="parent" style="height: 700px">
@@ -16,23 +17,23 @@
                     <input type="hidden" name="product_id" value="${product.id}"/>
                 </form>
                 <div class="card-text" style="margin-top: 10px">${product.description}</div>
-                <#if user?? && isManager>
-                    <div class="parent" style="margin-top: 5px">
-                        <div class="child" style="width: 26%; float:left;">
+                <div class="parent" style="margin-top: 5px">
+                    <div class="child" style="width: 26%; float:left;">
+                        <#if user?? && isManager>
                             <form action="/products/${product.id}/edit" method="get">
                                 <input type="submit" class="btn btn-primary" value="Изменить товар">
                             </form>
-                        </div>
-                        <div class="child" style="width: 72%; float:left;">
+                        </#if>
+                    </div>
+                    <div class="child" style="width: 72%; float:left;">
+                        <#if user?? && isManager>
                             <form action="/products/${product.id}/delete" method="POST">
                                 <input type="submit" class="btn btn-primary" value="Удалить товар">
                             </form>
-                        </div>
+                        </#if>
                     </div>
-                </#if>
+                </div>
             </div>
         </div>
     </div>
-
-
 </@c.page>
