@@ -1,11 +1,15 @@
+<#include "../components/security.ftlh">
 <#import '../components/common.ftlh' as c>
 <#import '../css/inline.css' as css>
 <#import '../components/pager.ftl' as p>
 
 <@c.page>
-    <form method="get">
-        <a href="/products/new" class="btn btn-primary">Создать товар</a>
-    </form>
+
+    <#if user?? && isManager>
+        <form method="get">
+                <a href="/products/new" class="btn btn-primary">Создать товар</a>
+        </form>
+    </#if>
     <br/>
     <@p.pager url productsPage/>
     <#list productsPage.content as product>

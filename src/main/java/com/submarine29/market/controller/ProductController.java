@@ -2,12 +2,15 @@ package com.submarine29.market.controller;
 
 import com.submarine29.market.domain.Category;
 import com.submarine29.market.domain.Product;
+import com.submarine29.market.domain.Role;
 import com.submarine29.market.repo.CategoryRepo;
 import com.submarine29.market.repo.ProductRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -52,6 +55,9 @@ public class ProductController {
 
     @GetMapping("new")
     public String newProduct(Model model) {
+        if (!((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getAuthorities().contains(Role.MANAGER)) {
+            return "error/error";
+        }
         model.addAttribute("categories", categoryRepo.findAll());
         return "products/new";
     }
@@ -61,11 +67,17 @@ public class ProductController {
                          @Valid Product product,
                          BindingResult bindingResult,
                          Model model) {
+        if (!((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getAuthorities().contains(Role.MANAGER)) {
+            return "error/error";
+        }
         return createUpsertErrorModel("products/new", categoryName, product, bindingResult, model);
     }
 
     @GetMapping("{id}/edit")
     public String updateProduct(Model model, @PathVariable("id") Product product) {
+        if (!((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getAuthorities().contains(Role.MANAGER)) {
+            return "error/error";
+        }
         model.addAttribute("product", product);
         String oldPrice = product.getPrice() + "";
         model.addAttribute("priceOld", oldPrice.replace(',', '.'));
@@ -78,11 +90,17 @@ public class ProductController {
                          @Valid Product product,
                          BindingResult bindingResult,
                          Model model) {
+        if (!((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getAuthorities().contains(Role.MANAGER)) {
+            return "error/error";
+        }
         return createUpsertErrorModel("products/edit", categoryName, product, bindingResult, model);
     }
 
     @PostMapping("{id}/delete")
     public String delete(@PathVariable("id") Product product) {
+        if (!((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getAuthorities().contains(Role.MANAGER)) {
+            return "error/error";
+        }
         productRepo.delete(product);
         return "redirect:/products";
     }
