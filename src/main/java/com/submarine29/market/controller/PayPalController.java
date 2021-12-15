@@ -2,6 +2,7 @@ package com.submarine29.market.controller;
 
 import com.submarine29.market.domain.Order;
 import com.submarine29.market.domain.OrderItem;
+import com.submarine29.market.domain.Status;
 import com.submarine29.market.services.PayPalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,17 +23,14 @@ public class PayPalController {
     public static final String SUCCESS_URL = "pay/success";
     public static final String CANCEL_URL = "pay/cancel";
 
-    /*@GetMapping("/")
-    public String home() {
-        return "main";
-    }*/
-
     @PostMapping("/pay/{id}")
     public String payment(@PathVariable("id") Order order) {
         try {
 
             List<OrderItem> orderItems = order.getOrderItems();
             double total = 0.00;
+
+            order.setStatus(Status.CONFIRMED);
 
             for (OrderItem orderItem : orderItems){
                 total = total + orderItem.getProduct().getPrice();

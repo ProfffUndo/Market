@@ -87,7 +87,15 @@ public class BasketService {
             for (OrderItem orderItem: orderItems){
                 if (orderItem.getProduct().getId().equals(productId)){
                     orderItemRepo.delete(orderItem);
+                    orderItems.remove(orderItem);
+                    break;
                 }
+            }
+
+            if (orderItems.isEmpty()){
+                //currentOrder.setStatus(Status.DELETED);
+                //orderRepo.save(currentOrder);
+                orderRepo.delete(currentOrder);
             }
 
         } catch (NoSuchElementException e) {
