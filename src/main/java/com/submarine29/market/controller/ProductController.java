@@ -3,12 +3,14 @@ package com.submarine29.market.controller;
 import com.submarine29.market.domain.Category;
 import com.submarine29.market.domain.Product;
 import com.submarine29.market.domain.Role;
+import com.submarine29.market.domain.User;
 import com.submarine29.market.repo.CategoryRepo;
 import com.submarine29.market.repo.ProductRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -54,8 +56,9 @@ public class ProductController {
     }
 
     @GetMapping("new")
-    public String newProduct(Model model) {
-        if (!((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getAuthorities().contains(Role.MANAGER)) {
+    public String newProduct(@AuthenticationPrincipal User user,
+                             Model model) {
+        if (!user.getAuthorities().contains(Role.MANAGER)) {
             return "error/error";
         }
         model.addAttribute("categories", categoryRepo.findAll());
@@ -63,19 +66,21 @@ public class ProductController {
     }
 
     @PostMapping("/new")
-    public String create(@ModelAttribute("categoryName") String categoryName,
+    public String create(@AuthenticationPrincipal User user,
+                         @ModelAttribute("categoryName") String categoryName,
                          @Valid Product product,
                          BindingResult bindingResult,
                          Model model) {
-        if (!((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getAuthorities().contains(Role.MANAGER)) {
+        if (!user.getAuthorities().contains(Role.MANAGER)) {
             return "error/error";
         }
         return createUpsertErrorModel("products/new", categoryName, product, bindingResult, model);
     }
 
     @GetMapping("{id}/edit")
-    public String updateProduct(Model model, @PathVariable("id") Product product) {
-        if (!((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getAuthorities().contains(Role.MANAGER)) {
+    public String updateProduct(@AuthenticationPrincipal User user,
+                                Model model, @PathVariable("id") Product product) {
+        if (!user.getAuthorities().contains(Role.MANAGER)) {
             return "error/error";
         }
         model.addAttribute("product", product);
@@ -86,19 +91,21 @@ public class ProductController {
     }
 
     @PostMapping("{id}/edit")
-    public String update(@ModelAttribute("categoryName") String categoryName,
+    public String update(@AuthenticationPrincipal User user, 
+                         @ModelAttribute("categoryName") String categoryName,
                          @Valid Product product,
                          BindingResult bindingResult,
                          Model model) {
-        if (!((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getAuthorities().contains(Role.MANAGER)) {
+        if (!user.getAuthorities().contains(Role.MANAGER)) {
             return "error/error";
         }
         return createUpsertErrorModel("products/edit", categoryName, product, bindingResult, model);
     }
 
     @PostMapping("{id}/delete")
-    public String delete(@PathVariable("id") Product product) {
-        if (!((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getAuthorities().contains(Role.MANAGER)) {
+    public String delete(@AuthenticationPrincipal User user,
+                         @PathVariable("id") Product product) {
+        if (!user.getAuthorities().contains(Role.MANAGER)) {
             return "error/error";
         }
         productRepo.delete(product);
