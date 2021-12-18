@@ -1,12 +1,17 @@
 <#macro upsert>
     <label for="nameInput">Введите название товара</label>
     <input id="nameInput" type="text"
-           class="form-control ${(nameError??)?string('is-invalid','')}"
+           class="form-control ${(nameError??)?string('is-invalid','')} ${(productNameError??)?string('is-invalid','')}"
            value="<#if product??>${product.name}</#if>"
            placeholder="Название" name="name">
     <#if nameError??>
         <div class="invalid-feedback">
             ${nameError}
+        </div>
+    </#if>
+    <#if productNameError??>
+        <div class="invalid-feedback">
+            ${productNameError}
         </div>
     </#if>
     <br/>

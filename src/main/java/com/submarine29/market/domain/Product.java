@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.URL;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.List;
 
@@ -22,13 +23,14 @@ public class Product implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO,
             generator = "com_seq")
     private Long id;
-    @Column(unique = true)
+    @Size(min=1,max=50)
     private String name;
     @Column(length = 4000)
+    @Size(min=10,max=4000)
     private String description;
     private double price; //Валидируется на хосте в upsert_product на 25 строке.
     // Изменила регулярное выражение, чтобы нельзя было поставить 0.00 рублей
-    @URL(message = "Введите ссылку на фотографию товара")
+    @URL(message = "Введите ссылку на фотографию товара") //Написать regex
     private String imagePath;
     @ManyToOne
     @JsonIgnore
