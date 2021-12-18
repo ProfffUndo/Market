@@ -33,12 +33,12 @@
     <br/>
     <label for="imgInput">Введите ссылку на картинку</label>
     <input id="imgInput" type="text"
-           class="form-control ${(imgPathError??)?string('is-invalid','')}"
+           class="form-control ${(imagePathError??)?string('is-invalid','')}"
            value="<#if product??>${product.imagePath}</#if>"
            placeholder="Картинка" name="imagePath">
     <#if priceError??>
         <div class="invalid-feedback">
-            ${imgPathError}
+            ${imagePathError}
         </div>
     </#if>
     <br/>
