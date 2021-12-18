@@ -4,10 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.URL;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -32,14 +34,24 @@ public class User implements UserDetails, Serializable {
 
     @Id
     private Long id;
+    @NotBlank
     private String name;
+    @URL(message = "Введите ссылку на фотографию")
     private String userpic; //Почему String?
+    @Email
     private String email;
     private String gender;
     private String locale;
-    private String login;
+    @Column(unique = true)
+    private String login; //! не применяется почему-то, выполните 151 строку в data.sql
+    @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&-+=().])(?=\\\\S+$).{8,20}$",
+            message = "Пароль должен состоять из восьми или более символов латинского алфавита, " +
+                    "содержать заглавные и строчные буквы, цифры и специальные символы @ # $ % ^ & - + = ( ) .")
     private String password;
+    @Pattern(regexp = "^((8|\\+7)[\\- ]?)?(\\(?\\d{3}\\)?[\\- ]?)?[\\d\\- ]{7,10}$",
+            message = "Номер телефона введен не верно")
     private String phone;
+    @PastOrPresent
     private LocalDateTime lastVisit;
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)

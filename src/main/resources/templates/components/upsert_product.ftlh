@@ -22,7 +22,7 @@
     </#if>
     <br/>
     <label for="priceInput">Введите цену товара</label>
-    <input id="priceInput" type="text" pattern="\d+(\.\d{1,2})?"
+    <input id="priceInput" type="text" pattern="[1-9]\d*(\.\d{1,2})?"
            class="form-control ${(priceError??)?string('is-invalid','')}"
            value="<#if priceOld??>${priceOld}</#if>" placeholder="Цена" name="price">
     <#if priceError??>
@@ -33,12 +33,12 @@
     <br/>
     <label for="imgInput">Введите ссылку на картинку</label>
     <input id="imgInput" type="text"
-           class="form-control ${(imgError??)?string('is-invalid','')}"
+           class="form-control ${(imgPathError??)?string('is-invalid','')}"
            value="<#if product??>${product.imagePath}</#if>"
            placeholder="Картинка" name="imagePath">
     <#if priceError??>
         <div class="invalid-feedback">
-            ${imgError}
+            ${imgPathError}
         </div>
     </#if>
     <br/>

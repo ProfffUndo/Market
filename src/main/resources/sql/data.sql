@@ -145,6 +145,10 @@ insert into order_item values (20,3,1);
 drop sequence com_seq;
 create sequence com_seq start 50 increment 1;
 
+ALTER TABLE category ADD CONSTRAINT name UNIQUE (name);
+--Я добавила аннотацию на уникальность названия категории, но она не применилась
+--(мб для этого надо дропать бд, поэтому изменяю тут напрямую
+ALTER TABLE usr ADD CONSTRAINT login UNIQUE (login);
 
 
 

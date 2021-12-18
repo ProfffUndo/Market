@@ -61,6 +61,7 @@ public class ProductController {
         if (!user.getAuthorities().contains(Role.MANAGER)) {
             return "error/error";
         }
+        model.addAttribute("priceOld","0.0");
         model.addAttribute("categories", categoryRepo.findAll());
         return "products/new";
     }
