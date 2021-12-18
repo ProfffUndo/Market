@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 public class ControllerUtil {
 
     // Полезный метод получения ошибок
-    static Map<String, String> getErrors(BindingResult bindingResult) {
+    public static Map<String, String> getErrors(BindingResult bindingResult) {
         Collector<FieldError, ?, Map<String, String>> collector =
                 Collectors.toMap(
                         fieldError -> fieldError.getField() + "Error",

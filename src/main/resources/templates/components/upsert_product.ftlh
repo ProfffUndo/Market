@@ -1,12 +1,17 @@
 <#macro upsert>
     <label for="nameInput">Введите название товара</label>
     <input id="nameInput" type="text"
-           class="form-control ${(nameError??)?string('is-invalid','')}"
+           class="form-control ${(nameError??)?string('is-invalid','')} ${(productNameError??)?string('is-invalid','')}"
            value="<#if product??>${product.name}</#if>"
            placeholder="Название" name="name">
     <#if nameError??>
         <div class="invalid-feedback">
             ${nameError}
+        </div>
+    </#if>
+    <#if productNameError??>
+        <div class="invalid-feedback">
+            ${productNameError}
         </div>
     </#if>
     <br/>
@@ -22,7 +27,7 @@
     </#if>
     <br/>
     <label for="priceInput">Введите цену товара</label>
-    <input id="priceInput" type="text" pattern="\d+(\.\d{1,2})?"
+    <input id="priceInput" type="text" pattern="[1-9]\d*(\.\d{1,2})?"
            class="form-control ${(priceError??)?string('is-invalid','')}"
            value="<#if priceOld??>${priceOld}</#if>" placeholder="Цена" name="price">
     <#if priceError??>
@@ -33,12 +38,12 @@
     <br/>
     <label for="imgInput">Введите ссылку на картинку</label>
     <input id="imgInput" type="text"
-           class="form-control ${(imgError??)?string('is-invalid','')}"
+           class="form-control ${(imagePathError??)?string('is-invalid','')}"
            value="<#if product??>${product.imagePath}</#if>"
            placeholder="Картинка" name="imagePath">
     <#if priceError??>
         <div class="invalid-feedback">
-            ${imgError}
+            ${imagePathError}
         </div>
     </#if>
     <br/>

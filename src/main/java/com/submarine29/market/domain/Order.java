@@ -7,10 +7,11 @@ import lombok.NoArgsConstructor;
 import org.codehaus.jackson.annotate.JsonIgnore;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.PastOrPresent;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
 
 @Data
 @Builder
@@ -23,8 +24,10 @@ public class Order implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO,
             generator = "com_seq")
     private Long id;
+    @PastOrPresent
     private LocalDateTime orderDate;
     private String comment;
+    @NotBlank
     private String deliveryAddress;
 
     @Enumerated(EnumType.STRING)

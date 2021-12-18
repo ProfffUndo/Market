@@ -1,7 +1,7 @@
 package com.submarine29.market.controller;
 
-import com.submarine29.market.domain.Category;
 import com.submarine29.market.domain.Product;
+import com.submarine29.market.services.ValidationService;
 import com.submarine29.market.domain.Role;
 import com.submarine29.market.domain.User;
 import com.submarine29.market.repo.CategoryRepo;
@@ -11,38 +11,61 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/products")
 public class ProductController {
     private final ProductRepo productRepo;
     private final CategoryRepo categoryRepo;
+    private final ValidationService validationService;
 
     @Autowired
-    public ProductController(ProductRepo productRepo, CategoryRepo categoryRepo) {
+    public ProductController(ProductRepo productRepo, CategoryRepo categoryRepo, ValidationService validationService) {
         this.productRepo = productRepo;
         this.categoryRepo = categoryRepo;
+        this.validationService = validationService;
     }
 
+//    @GetMapping
+//    public String products(
+//            Model model,
+//            @PageableDefault(sort = {"id"},direction = Sort.Direction.DESC) Pageable pageable
+//    ) {
+//        if (pageable.getPageSize() > 50 || pageable.getPageSize() < 1) {
+//            return "redirect:/products/?page=0&size=50";
+//        } else {
+//            model.addAttribute("productsPage", productRepo.findAllFromToPrice(pageable,100.00,1000.00));
+//            model.addAttribute("url", "/products");
+//        }
+//        return "products/list";
+//    }
+
     @GetMapping
-    public String products(
+    public String productsFromTo(
             Model model,
-            @PageableDefault(sort = {"id"},direction = Sort.Direction.DESC) Pageable pageable
-    ) {
+            @PageableDefault(sort = {"id"},direction = Sort.Direction.DESC) Pageable pageable,
+            @RequestParam("from") Optional<Double> from, @RequestParam("to") Optional<Double> to,
+            @RequestParam("category_id") Optional<Long> categoryId
+            ) {
         if (pageable.getPageSize() > 50 || pageable.getPageSize() < 1) {
             return "redirect:/products/?page=0&size=50";
         } else {
-            model.addAttribute("productsPage", productRepo.findAll(pageable));
+            if (categoryId.isEmpty()) {
+                model.addAttribute("productsPage", productRepo
+                        .findAllFromToPrice(pageable, from.orElse(0.00), to.orElse(Double.MAX_VALUE)));
+            }
+            else{
+                model.addAttribute("productsPage", productRepo
+                        .findAllFromToPriceAndCategory(pageable, from.orElse(0.00), to.orElse(Double.MAX_VALUE),categoryId.get()));
+            }
             model.addAttribute("url", "/products");
         }
         return "products/list";
@@ -61,6 +84,7 @@ public class ProductController {
         if (!user.getAuthorities().contains(Role.MANAGER)) {
             return "error/error";
         }
+        model.addAttribute("priceOld","0.0");
         model.addAttribute("categories", categoryRepo.findAll());
         return "products/new";
     }
@@ -74,7 +98,7 @@ public class ProductController {
         if (!user.getAuthorities().contains(Role.MANAGER)) {
             return "error/error";
         }
-        return createUpsertErrorModel("products/new", categoryName, product, bindingResult, model);
+        return validationService.createUpsertErrorModel("products/new", categoryName, product, bindingResult, model);
     }
 
     @GetMapping("{id}/edit")
@@ -99,7 +123,7 @@ public class ProductController {
         if (!user.getAuthorities().contains(Role.MANAGER)) {
             return "error/error";
         }
-        return createUpsertErrorModel("products/edit", categoryName, product, bindingResult, model);
+        return validationService.createUpsertErrorModel("products/edit", categoryName, product, bindingResult, model);
     }
 
     @PostMapping("{id}/delete")
@@ -111,30 +135,4 @@ public class ProductController {
         productRepo.delete(product);
         return "redirect:/products";
     }
-
-    private String createUpsertErrorModel(String errorUrl, String categoryName,
-                                          Product product,
-                                          BindingResult bindingResult,
-                                          Model model) {
-        Map<String, String> errorsMap = new HashMap<>();
-        Category category = categoryRepo.findByName(categoryName);
-        if (category == null) {
-            errorsMap.put("categoryError", "Необходимо выбрать категорию товара!");
-        }
-
-        if (category == null || bindingResult.hasErrors()) {
-            String priceOld = product.getPrice() + "";
-            model.addAttribute("priceOld", priceOld.replace(",", "."));
-            model.addAttribute("categories", categoryRepo.findAll());
-            model.addAttribute("categoryOld", categoryName);
-            errorsMap.putAll(ControllerUtil.getErrors(bindingResult));
-            model.mergeAttributes(errorsMap);
-            return errorUrl;
-        }
-        product.setCategory(category);
-        productRepo.save(product);
-        model.addAttribute("product", product);
-        return "/products/show";
-    }
-
 }
