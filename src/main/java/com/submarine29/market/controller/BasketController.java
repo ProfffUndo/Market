@@ -46,7 +46,7 @@ public class BasketController {
         return "basket/basket";
     }
 
-    @PostMapping()
+    @PostMapping("/add")
     public String addProductToBasket(@ModelAttribute("product_id") Long productId){
         basketService.addProductToOrder(0L,productId);
         return "redirect:/basket";
@@ -54,7 +54,13 @@ public class BasketController {
 
     @PostMapping("/delete")
     public String deleteProductFromBasket(@ModelAttribute("product_id") Long productId){
-        basketService.deleteProductFromOrder(0L,productId);
+        basketService.deleteProductFromOrder(0L,productId,false);
+        return "redirect:/basket";
+    }
+
+    @PostMapping("/remove")
+    public String removeProductFromBasket(@ModelAttribute("product_id") Long productId){
+        basketService.deleteProductFromOrder(0L,productId,true);
         return "redirect:/basket";
     }
 }

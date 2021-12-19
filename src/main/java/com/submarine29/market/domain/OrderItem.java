@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Objects;
 
 @Data
 @Builder
@@ -26,12 +27,18 @@ public class OrderItem implements Serializable {
     @ManyToOne
     private Order order;
 
+    private Long count;
+
     @Override
     public String toString() {
         return "OrderItem{" +
                 "id=" + id +
                 ", product=" + product +
                 '}';
+    }
+
+    public double getSum(){
+        return count* product.getPrice();
     }
 }
 

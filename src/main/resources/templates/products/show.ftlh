@@ -12,7 +12,7 @@
             <div class="title" style="color: blue; font-size: 30px; font-weight: bold">${product.name}</div>
             <div style="font-size: 20px; margin-top: 10px; font-weight: bold">Всего за ${product.price} рублей</div>
             <div style="margin-top: 10px">
-                <form method="post" action="/basket">
+                <form method="post" action="/basket/add">
                     <input type="submit" class="btn btn-primary" value="В корзину">
                     <input type="hidden" name="product_id" value="${product.id}"/>
                 </form>
