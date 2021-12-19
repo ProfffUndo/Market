@@ -11,6 +11,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 
 @Data
 @Builder
@@ -53,5 +54,20 @@ public class Product implements Serializable {
                 ", image=" + imagePath +
                 ", category=" + category +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Product product = (Product) o;
+        return Double.compare(product.price, price) == 0 && Objects.equals(id, product.id)
+                && Objects.equals(name, product.name) && Objects.equals(description, product.description)
+                && Objects.equals(imagePath, product.imagePath) && Objects.equals(category, product.category);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, description, price, imagePath, category);
     }
 }

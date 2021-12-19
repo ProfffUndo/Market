@@ -22,6 +22,7 @@
                         <tr>
                             <td> <a href="/products/${item.product.id}">${item.product.name} </a></td>
                             <td>${item.product.price}</td>
+                            <td>"шт "+${item.count}</td>
                             <td>
                                 <form method="post" action="/basket/delete">
                                     <input type="submit" class="btn btn-primary" value="Удалить">
