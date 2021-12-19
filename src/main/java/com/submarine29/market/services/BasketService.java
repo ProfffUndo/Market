@@ -50,6 +50,7 @@ public class BasketService {
                 currentOrder.setOrderDate(LocalDateTime.now());
                 item.setProduct(product);
                 item.setOrder(currentOrder);
+                item.setCount(1L);
                 orderRepo.save(currentOrder);
                 orderItemRepo.save(item);
             } else {
@@ -59,10 +60,14 @@ public class BasketService {
                     itemFromCurrentOrder = itemIter.next();
                     if (itemFromCurrentOrder.getProduct().equals(product)) {
                         itemFromCurrentOrder.setCount(itemFromCurrentOrder.getCount() + 1);
-                        break;
+                        return;
                     }
-
                 }
+                OrderItem item = new OrderItem();
+                item.setProduct(product);
+                item.setOrder(currentOrder);
+                item.setCount(1L);
+                orderItemRepo.save(item);
             }
         } catch (NoSuchElementException e) {
             throw new SecurityException("Пользователь не авторизован", e);
@@ -83,7 +88,7 @@ public class BasketService {
         return null;
     }
 
-    public void deleteProductFromOrder(Long userId, Long productId) throws SecurityException {
+    public void deleteProductFromOrder(Long userId, Long productId, boolean remove) throws SecurityException {
         try {
             User user = userRepo.findById(userId).get();
             List<Order> usersOrders = orderRepo.findByUser(user);
@@ -91,11 +96,16 @@ public class BasketService {
             Order currentOrder;
             while (iter.hasNext()) {
                 currentOrder = iter.next();
-                if (currentOrder.getStatus() != Status.NEW) {
+                if (currentOrder.getStatus() == Status.NEW) {
                     List<OrderItem> orderItems = orderItemRepo.findByOrder(currentOrder);
                     for (OrderItem orderItem : orderItems) {
                         if (orderItem.getProduct().getId().equals(productId)) {
-                            decreaseOrderItemCount(orderItem, orderItems);
+                            if(!remove) {
+                                decreaseOrderItemCount(orderItem, orderItems);
+                            }else{
+                                orderItemRepo.delete(orderItem);
+                                orderItems.remove(orderItem);
+                            }
                             break;
                         }
                     }

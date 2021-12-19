@@ -36,6 +36,10 @@ public class OrderItem implements Serializable {
                 ", product=" + product +
                 '}';
     }
+
+    public double getSum(){
+        return count* product.getPrice();
+    }
 }
 
 

@@ -14,17 +14,30 @@
                     <tr>
                         <th scope="col">Название товара</th>
                         <th scope="col">Цена</th>
+                        <th scope="col">Количество</th>
+                        <th scope="col">Общая сумма</th>
                         <th scope="col">Действия</th>
                     </tr>
                     </thead>
                     <tbody>
                     <#list order.orderItems as item>
                         <tr>
-                            <td> <a href="/products/${item.product.id}">${item.product.name} </a></td>
+                            <td><a href="/products/${item.product.id}">${item.product.name} </a></td>
                             <td>${item.product.price}</td>
-                            <td>"шт "+${item.count}</td>
                             <td>
                                 <form method="post" action="/basket/delete">
+                                    <input type="submit" class="btn btn-primary" value="-">
+                                    <input type="hidden" name="product_id" value="${item.product.id}"/>
+                                </form>
+                                ${item.count}
+                                <form method="post" action="/basket/add">
+                                    <input type="submit" class="btn btn-primary" value="+">
+                                    <input type="hidden" name="product_id" value="${item.product.id}"/>
+                                </form>
+                            </td>
+                            <td>${item.getSum()}</td>
+                            <td>
+                                <form method="post" action="/basket/remove">
                                     <input type="submit" class="btn btn-primary" value="Удалить">
                                     <input type="hidden" name="product_id" value="${item.product.id}"/>
                                 </form>

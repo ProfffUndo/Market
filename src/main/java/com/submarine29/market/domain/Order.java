@@ -27,7 +27,6 @@ public class Order implements Serializable {
     @PastOrPresent
     private LocalDateTime orderDate;
     private String comment;
-    @NotBlank
     private String deliveryAddress;
 
     @Enumerated(EnumType.STRING)
