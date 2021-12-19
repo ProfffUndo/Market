@@ -26,6 +26,8 @@ public class OrderItem implements Serializable {
     @ManyToOne
     private Order order;
 
+    private Long count;
+
     @Override
     public String toString() {
         return "OrderItem{" +

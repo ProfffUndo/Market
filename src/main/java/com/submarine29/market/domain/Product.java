@@ -23,7 +23,7 @@ public class Product implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO,
             generator = "com_seq")
     private Long id;
-    @Size(min=1,max=50)
+    @Size(min=1,max=100)
     private String name;
     @Column(length = 4000)
     @Size(min=10,max=4000)
