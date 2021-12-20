@@ -1,6 +1,8 @@
 package com.submarine29.market.controller;
 
+import com.submarine29.market.domain.Category;
 import com.submarine29.market.domain.Product;
+import com.submarine29.market.dto.DataForFindDTO;
 import com.submarine29.market.services.ValidationService;
 import com.submarine29.market.domain.Role;
 import com.submarine29.market.domain.User;
@@ -16,7 +18,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.Optional;
 
@@ -34,27 +35,14 @@ public class ProductController {
         this.validationService = validationService;
     }
 
-//    @GetMapping
-//    public String products(
-//            Model model,
-//            @PageableDefault(sort = {"id"},direction = Sort.Direction.DESC) Pageable pageable
-//    ) {
-//        if (pageable.getPageSize() > 50 || pageable.getPageSize() < 1) {
-//            return "redirect:/products/?page=0&size=50";
-//        } else {
-//            model.addAttribute("productsPage", productRepo.findAllFromToPrice(pageable,100.00,1000.00));
-//            model.addAttribute("url", "/products");
-//        }
-//        return "products/list";
-//    }
-
     @GetMapping
-    public String productsFromTo(
+    public String products(
             Model model,
-            @PageableDefault(sort = {"id"},direction = Sort.Direction.DESC) Pageable pageable,
+            @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC) Pageable pageable,
             @RequestParam("from") Optional<Double> from, @RequestParam("to") Optional<Double> to,
             @RequestParam("category_id") Optional<Long> categoryId
             ) {
+        Long category = null;
         if (pageable.getPageSize() > 50 || pageable.getPageSize() < 1) {
             return "redirect:/products/?page=0&size=50";
         } else {
@@ -63,12 +51,30 @@ public class ProductController {
                         .findAllFromToPrice(pageable, from.orElse(0.00), to.orElse(Double.MAX_VALUE)));
             }
             else{
+                category = categoryRepo.findById(categoryId.get()).get().getId();
                 model.addAttribute("productsPage", productRepo
-                        .findAllFromToPriceAndCategory(pageable, from.orElse(0.00), to.orElse(Double.MAX_VALUE),categoryId.get()));
+                        .findAllFromToPriceAndCategory(pageable, from.orElse(0.00), to.orElse(Double.MAX_VALUE), categoryId.get()));
+                //model.addAttribute("categoryOld", category.getName());
             }
-            model.addAttribute("url", "/products");
         }
+        DataForFindDTO dto = new DataForFindDTO("", from.orElse(null), to.orElse(null), category);
+        model.addAttribute("categories", categoryRepo.findAll());
+        model.addAttribute("dto", dto);
+        String params = "";
+        if (!dto.toString().equals("")) {
+            params = dto.toString() + "&";
+        }
+        model.addAttribute("url", "/products?" + params);
         return "products/list";
+    }
+
+    @PostMapping("find/find/find")
+    public String productsFind(@ModelAttribute("name") String name,
+                               @ModelAttribute("priceFrom") String priceFrom,
+                               @ModelAttribute("priceTo") String priceTo,
+                               @ModelAttribute("category") String category) {
+        return "redirect:/products?" + new DataForFindDTO(name, Double.parseDouble(priceFrom)
+                , Double.parseDouble(priceTo), categoryRepo.findByName(category).getId());
     }
 
     @GetMapping("{id}")

@@ -50,7 +50,7 @@
     <div class="form-group">
         <label for="categorySelect">Выберите категорию товара</label>
         <select class="form-control ${(categoryError??)?string('is-invalid','')}" id="categorySelect" name="categoryName">
-            <option selected><#if product??><#if product.category??>${product.category.name}</#if></#if></option>
+            <option selected><#if product??><#if categoryOld??>${categoryOld}</#if></#if></option>
             <#list categories as category>
                 <option>${category.name}</option>
             </#list>
