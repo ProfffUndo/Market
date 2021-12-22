@@ -25,15 +25,17 @@
                             <td><a href="/products/${item.product.id}">${item.product.name} </a></td>
                             <td>${item.product.price}</td>
                             <td>
-                                <form method="post" action="/basket/delete">
-                                    <input type="submit" class="btn btn-primary" value="-">
-                                    <input type="hidden" name="product_id" value="${item.product.id}"/>
-                                </form>
-                                ${item.count}
-                                <form method="post" action="/basket/add">
-                                    <input type="submit" class="btn btn-primary" value="+">
-                                    <input type="hidden" name="product_id" value="${item.product.id}"/>
-                                </form>
+                                <div style="display: flex; justify-content: center; align-items: center">
+                                    <form method="post" action="/basket/delete" style="display: inline-block">
+                                        <input type="submit" class="btn btn-primary btn-sm" value="-">
+                                        <input type="hidden" name="product_id" value="${item.product.id}"/>
+                                    </form>
+                                    <div  style="display: inline-block; margin-left: 8px; margin-right: 8px">${item.count}</div>
+                                    <form method="post" action="/basket/add" style="display: inline-block">
+                                        <input type="submit" class="btn btn-primary btn-sm" value="+">
+                                        <input type="hidden" name="product_id" value="${item.product.id}"/>
+                                    </form>
+                                </div>
                             </td>
                             <td>${item.getSum()}</td>
                             <td>

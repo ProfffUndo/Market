@@ -12,9 +12,19 @@ public class DataForFindDTO {
     private Double priceFrom;
     private Double priceTo;
     private Long categoryId;
+    private String sort;
 
     @Override
     public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(getUrlForSort());
+        if (sort != null && !sort.equals("")) {
+            sb.append("sort=").append(sort);
+        }
+        return sb.toString();
+    }
+
+    public String getUrlForSort() {
         StringBuilder sb = new StringBuilder();
         if (name != null && !name.equals("")) {
             sb.append("name=").append(name).append("&");
@@ -26,10 +36,7 @@ public class DataForFindDTO {
             sb.append("to=").append(priceTo).append("&");
         }
         if (categoryId != null) {
-            sb.append("category_id=").append(categoryId);
-        }
-        if (sb.toString().endsWith("&")) {
-            sb.delete(sb.length(), sb.length());
+            sb.append("category_id=").append(categoryId).append("&");
         }
         return sb.toString();
     }

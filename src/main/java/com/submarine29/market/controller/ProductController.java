@@ -9,6 +9,7 @@ import com.submarine29.market.domain.User;
 import com.submarine29.market.repo.CategoryRepo;
 import com.submarine29.market.repo.ProductRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -19,6 +20,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Objects;
 import java.util.Optional;
 
 @Controller
@@ -40,9 +42,25 @@ public class ProductController {
             Model model,
             @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC) Pageable pageable,
             @RequestParam("from") Optional<Double> from, @RequestParam("to") Optional<Double> to,
-            @RequestParam("category_id") Optional<Long> categoryId
+            @RequestParam("category_id") Optional<Long> categoryId,
+            @RequestParam("sort") Optional<String> sort,
+            @RequestParam("name") Optional<String> name
             ) {
-        Long category = null;
+        //String category = null;
+        if (sort.isPresent()) {
+            switch (sort.get()) {
+                case ("priceup"):
+                    pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(),Sort.by("price").ascending());
+                    break;
+                case ("pricedown"):
+                    pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(),Sort.by("price").descending());
+                    break;
+
+                default:
+                    pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(),Sort.by("id").descending());
+                    break;
+            }
+        }
         if (pageable.getPageSize() > 50 || pageable.getPageSize() < 1) {
             return "redirect:/products/?page=0&size=50";
         } else {
@@ -51,20 +69,23 @@ public class ProductController {
                         .findAllFromToPrice(pageable, from.orElse(0.00), to.orElse(Double.MAX_VALUE)));
             }
             else{
-                category = categoryRepo.findById(categoryId.get()).get().getId();
+                //category = categoryRepo.findById(categoryId.get()).get().getName();
                 model.addAttribute("productsPage", productRepo
                         .findAllFromToPriceAndCategory(pageable, from.orElse(0.00), to.orElse(Double.MAX_VALUE), categoryId.get()));
                 //model.addAttribute("categoryOld", category.getName());
             }
         }
-        DataForFindDTO dto = new DataForFindDTO("", from.orElse(null), to.orElse(null), category);
+        DataForFindDTO dto = new DataForFindDTO("", from.orElse(null), to.orElse(null), categoryId.orElse(null), sort.orElse(null));
         model.addAttribute("categories", categoryRepo.findAll());
         model.addAttribute("dto", dto);
         String params = "";
+        String paramsForSort = "";
         if (!dto.toString().equals("")) {
-            params = dto.toString() + "&";
+            params = dto.toString();
+            paramsForSort = dto.getUrlForSort();
         }
         model.addAttribute("url", "/products?" + params);
+        model.addAttribute("urlForSort", "/products?" + paramsForSort);
         return "products/list";
     }
 
@@ -72,9 +93,27 @@ public class ProductController {
     public String productsFind(@ModelAttribute("name") String name,
                                @ModelAttribute("priceFrom") String priceFrom,
                                @ModelAttribute("priceTo") String priceTo,
-                               @ModelAttribute("category") String category) {
-        return "redirect:/products?" + new DataForFindDTO(name, Double.parseDouble(priceFrom)
-                , Double.parseDouble(priceTo), categoryRepo.findByName(category).getId());
+                               @ModelAttribute("category") String category,
+                               @ModelAttribute("sort") String sort) {
+        Long categoryId = null;
+        Double priceFromDouble = null;
+        Double priceToDouble = null;
+        //categoryId = categoryRepo.findByName(category).getId();
+        if (!Objects.equals(category, "")){
+            categoryId = categoryRepo.findByName(category).getId();
+        }
+        if (!Objects.equals(priceFrom, "")){
+            priceFromDouble = Double.parseDouble(priceFrom);
+        }
+        if (!Objects.equals(priceTo, "")){
+            priceToDouble = Double.parseDouble(priceTo);
+        }
+        if (priceFromDouble != null && priceToDouble != null && priceFromDouble > priceToDouble){
+            return "error/error"; //временно
+        }
+
+        return "redirect:/products?" + new DataForFindDTO(name, priceFromDouble
+                , priceToDouble, categoryId, sort);
     }
 
     @GetMapping("{id}")

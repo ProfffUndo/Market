@@ -12,11 +12,9 @@
             <li class="nav-item">
                 <a class="nav-link" href="/products">Товары</a>
             </li>
-            <#if user??>
-                <li class="nav-item">
-                    <a class="nav-link" href="/profile">Профиль</a>
-                </li>
-            </#if>
+            <li class="nav-item">
+                <a class="nav-link" href="/profile">Профиль</a>
+            </li>
         </ul>
 
         <a class="nav-link" href="/basket">Корзина</a>
