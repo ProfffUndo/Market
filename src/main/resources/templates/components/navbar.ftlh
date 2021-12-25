@@ -12,9 +12,12 @@
             <li class="nav-item">
                 <a class="nav-link" href="/products">Товары</a>
             </li>
-            <#if user??>
+            <li class="nav-item">
+                <a class="nav-link" href="/profile"><#if user??>Профиль<#else>Войти</#if></a>
+            </li>
+            <#if user?? && (isAdmin || isManager)>
                 <li class="nav-item">
-                    <a class="nav-link" href="/profile">Профиль</a>
+                    <a class="nav-link" href="/users">Пользователи</a>
                 </li>
             </#if>
         </ul>
