@@ -45,6 +45,13 @@
         <br/>
     </#if>
 
+    <#if currentUser.id == user.id || isManager>
+        <a href="/orders/${currentUser.id}">Список заказов</a>
+    </#if>
+
+    <br/>
+    <br/>
+
     <#if currentUser.id == user.id>
         <form method="get">
             <a href="/logout" class="btn btn-primary">Выйти</a>
