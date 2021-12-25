@@ -26,8 +26,7 @@ public class ProfileController {
     @GetMapping("{id}")
     public String profileForAny(@PathVariable("id") String id, Model model, @AuthenticationPrincipal User currentUser) {
         User user = userRepo.findById(ControllerUtil.createNormalniyIdFromUserBleat(id)).get();
-        if (!currentUser.getAuthorities().contains(Role.ADMIN) && !currentUser.getAuthorities().contains(Role.MANAGER)
-                && !currentUser.getId().equals(user.getId())) {
+        if (!currentUser.isAdmin() && !currentUser.isManager() && !currentUser.getId().equals(user.getId())) {
             return "error/error";
         }
         model.addAttribute("currentUser", user);
@@ -36,10 +35,10 @@ public class ProfileController {
     }
 
     private void addUserRolesInModel(User user, Model model) {
-        if (user.getRoles().contains(Role.MANAGER)) {
+        if (user.isManager()) {
             model.addAttribute("managerCheck", true);
         }
-        if (user.getRoles().contains(Role.ADMIN)) {
+        if (user.isAdmin()) {
             model.addAttribute("adminCheck", true);
         }
     }
@@ -50,7 +49,7 @@ public class ProfileController {
                                @ModelAttribute("admin") String admin,
                                @AuthenticationPrincipal User authoredUser,
                                Model model) {
-        if (!authoredUser.getAuthorities().contains(Role.ADMIN)) {
+        if (!authoredUser.isAdmin()) {
             return "error/error";
         }
         User user = userRepo.findById(ControllerUtil.createNormalniyIdFromUserBleat(userId)).get();
