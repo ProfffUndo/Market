@@ -1,15 +1,16 @@
 package com.submarine29.market.controller;
 
+import com.submarine29.market.domain.Role;
 import com.submarine29.market.domain.User;
 import com.submarine29.market.repo.UserDetailsRepo;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
-@RestController
-@RequestMapping("/account") // user? registration
+@Controller
+@RequestMapping("/users")
 public class UserController {
     private final UserDetailsRepo userDetailsRepo;
 
@@ -19,28 +20,11 @@ public class UserController {
     }
 
     @GetMapping
-    public List<User> list() {
-        return userDetailsRepo.findAll();
-    }
-
-    @GetMapping("{id}")
-    public User getOne(@PathVariable("id") User user) {
-        return user;
-    }
-
-    @PostMapping
-    public User create(@RequestBody User user) {
-        return userDetailsRepo.save(user);
-    }
-
-    @DeleteMapping("{id}")
-    public void delete(@PathVariable("id") User user) {
-        userDetailsRepo.delete(user);
-    }
-
-    @PutMapping("{id}")
-    public User update(@PathVariable("id") User userFromDB, @RequestBody User userNew) {
-        BeanUtils.copyProperties(userNew, userFromDB, "id");
-        return userDetailsRepo.save(userFromDB);
+    public String list(Model model, @AuthenticationPrincipal User currentUser) {
+        if (!currentUser.getAuthorities().contains(Role.ADMIN) && !currentUser.getAuthorities().contains(Role.MANAGER)) {
+            return "error/error";
+        }
+        model.addAttribute("users", userDetailsRepo.findAll());
+        return "users/list";
     }
 }
