@@ -6,9 +6,14 @@
 <@c.page>
 
     <#if user?? && isManager>
-        <form method="get">
-                <a href="/products/new" class="btn btn-primary">Создать товар</a>
-        </form>
+        <div>
+            <form method="get" style="display: inline-block">
+                    <a href="/products/new" class="btn btn-primary">Создать товар</a>
+            </form>
+            <form method="get" style="display: inline-block">
+                <a href="/category/new" class="btn btn-primary">Создать категорию</a>
+            </form>
+        </div>
     </#if>
     <br/>
     <@p.pager url productsPage/>
