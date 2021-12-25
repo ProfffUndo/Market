@@ -24,7 +24,6 @@ public class Order implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO,
             generator = "com_seq")
     private Long id;
-    @PastOrPresent
     private LocalDateTime orderDate;
     private String comment;
     private String deliveryAddress;
