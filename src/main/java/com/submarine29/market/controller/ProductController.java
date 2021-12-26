@@ -2,11 +2,13 @@ package com.submarine29.market.controller;
 
 import com.submarine29.market.domain.Category;
 import com.submarine29.market.domain.Product;
+import com.submarine29.market.dto.DataForFindDTO;
 import com.submarine29.market.services.ValidationService;
 import com.submarine29.market.domain.User;
 import com.submarine29.market.repo.CategoryRepo;
 import com.submarine29.market.repo.ProductRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -17,8 +19,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 @Controller
@@ -35,41 +39,95 @@ public class ProductController {
         this.validationService = validationService;
     }
 
-//    @GetMapping
-//    public String products(
-//            Model model,
-//            @PageableDefault(sort = {"id"},direction = Sort.Direction.DESC) Pageable pageable
-//    ) {
-//        if (pageable.getPageSize() > 50 || pageable.getPageSize() < 1) {
-//            return "redirect:/products/?page=0&size=50";
-//        } else {
-//            model.addAttribute("productsPage", productRepo.findAllFromToPrice(pageable,100.00,1000.00));
-//            model.addAttribute("url", "/products");
-//        }
-//        return "products/list";
-//    }
-
     @GetMapping
-    public String productsFromTo(
+    public String products(
             Model model,
-            @PageableDefault(sort = {"id"},direction = Sort.Direction.DESC) Pageable pageable,
+            @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC) Pageable pageable,
             @RequestParam("from") Optional<Double> from, @RequestParam("to") Optional<Double> to,
-            @RequestParam("category_id") Optional<Long> categoryId
+            @RequestParam("category_id") Optional<Long> categoryId,
+            @RequestParam("sort") Optional<String> sort,
+            @RequestParam("name") Optional<String> name
             ) {
+        //String category = null;
+        if (from.isPresent() && to.isPresent() && from.get() > to.get()){
+            model.addAttribute("priceError", "Цена от должна быть меньше цены до");
+        }
+
+        if (sort.isPresent()) {
+            switch (sort.get()) {
+                case ("priceup"):
+                    pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(),Sort.by("price").ascending());
+                    break;
+                case ("pricedown"):
+                    pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(),Sort.by("price").descending());
+                    break;
+
+                default:
+                    pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(),Sort.by("id").descending());
+                    break;
+            }
+        }
         if (pageable.getPageSize() > 50 || pageable.getPageSize() < 1) {
             return "redirect:/products/?page=0&size=50";
         } else {
-            if (categoryId.isEmpty()) {
+            if (categoryId.isEmpty() && name.isEmpty()) {
                 model.addAttribute("productsPage", productRepo
                         .findAllFromToPrice(pageable, from.orElse(0.00), to.orElse(Double.MAX_VALUE)));
             }
-            else{
+            else if (categoryId.isPresent() && name.isEmpty()){
+                //category = categoryRepo.findById(categoryId.get()).get().getName();
                 model.addAttribute("productsPage", productRepo
-                        .findAllFromToPriceAndCategory(pageable, from.orElse(0.00), to.orElse(Double.MAX_VALUE),categoryId.get()));
+                        .findAllFromToPriceAndCategory(pageable, from.orElse(0.00), to.orElse(Double.MAX_VALUE), categoryId.get()));
+                //model.addAttribute("categoryOld", category.getName());
             }
-            model.addAttribute("url", "/products");
+            else if (categoryId.isEmpty()){
+                model.addAttribute("productsPage", productRepo
+                        .findAllFromToPriceAndSearch(pageable, from.orElse(0.00), to.orElse(Double.MAX_VALUE), name.get()));
+            }
+            else {
+                model.addAttribute("productsPage", productRepo
+                        .findAllFromToPriceAndCategoryAndSearch(pageable, from.orElse(0.00), to.orElse(Double.MAX_VALUE), categoryId.get(),name.get()));
+            }
         }
+        DataForFindDTO dto = new DataForFindDTO(name.orElse(""), from.orElse(null), to.orElse(null), categoryId.orElse(null), sort.orElse(null));
+        model.addAttribute("categories", categoryRepo.findAll());
+        model.addAttribute("dto", dto);
+        String params = "";
+        String paramsForSort = "";
+        if (!dto.toString().equals("")) {
+            params = dto.toString();
+            paramsForSort = dto.getUrlForSort();
+        }
+        model.addAttribute("url", "/products?" + params);
+        model.addAttribute("urlForSort", "/products?" + paramsForSort);
         return "products/list";
+    }
+
+    @PostMapping("find/find/find")
+    public String productsFind(                               @ModelAttribute("name") String name,
+                               @ModelAttribute("priceFrom") String priceFrom,
+                               @ModelAttribute("priceTo") String priceTo,
+                               @ModelAttribute("category") String category,
+                               @ModelAttribute("sort") String sort) {
+        Long categoryId = null;
+        Double priceFromDouble = null;
+        Double priceToDouble = null;
+        //categoryId = categoryRepo.findByName(category).getId();
+        if (!Objects.equals(category, "")){
+            categoryId = categoryRepo.findByName(category).getId();
+        }
+        if (!Objects.equals(priceFrom, "")){
+            priceFromDouble = Double.parseDouble(priceFrom.replaceAll(" ",""));
+        }
+        if (!Objects.equals(priceTo, "")){
+            priceToDouble = Double.parseDouble(priceTo.replaceAll(" ",""));
+        }
+
+        DataForFindDTO data = new DataForFindDTO(name, priceFromDouble
+                , priceToDouble, categoryId, sort);
+        String nameFromDTO = data.getName();
+
+        return "redirect:/products?" + data;
     }
 
     @GetMapping("{id}")
