@@ -29,6 +29,7 @@ public class PayPalController {
         try {
 
             BasketService.checkAmountOfProductBeforePayment(order);
+            BasketService.addPopularityToProductsFromOrder(order);
 
             List<OrderItem> orderItems = order.getOrderItems();
             double total = 0.00;

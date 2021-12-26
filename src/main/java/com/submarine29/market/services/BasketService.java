@@ -35,11 +35,11 @@ public class BasketService {
             List<Order> usersOrders = orderRepo.findByUser(user);
             Product product = productRepo.findById(productId).get();
             Iterator<Order> iter = usersOrders.listIterator();
-            Order currentOrder;
+            Order currentOrder = null;
 
-            while ((currentOrder = iter.next()).getStatus() != Status.NEW && iter.hasNext()) {
+            while ((iter.hasNext()&& (currentOrder = iter.next()).getStatus() != Status.NEW )) {
             }
-            if (currentOrder.getStatus() != Status.NEW) {
+            if (currentOrder==null || currentOrder.getStatus() != Status.NEW) {
                 OrderItem item = new OrderItem();
                 currentOrder = new Order();
                 List<OrderItem> itemList = new ArrayList<>();
@@ -50,7 +50,7 @@ public class BasketService {
                 currentOrder.setOrderDate(LocalDateTime.now());
                 item.setProduct(product);
                 item.setOrder(currentOrder);
-                item.setCount(1L);
+                item.setCount(1);
                 checkAmountOfProductBeforeAdd(product,item);
                 orderRepo.save(currentOrder);
                 orderItemRepo.save(item);
@@ -68,7 +68,7 @@ public class BasketService {
                 OrderItem item = new OrderItem();
                 item.setProduct(product);
                 item.setOrder(currentOrder);
-                item.setCount(1L);
+                item.setCount(1);
                 checkAmountOfProductBeforeAdd(product,item);
                 orderItemRepo.save(item);
             }
@@ -153,5 +153,12 @@ public class BasketService {
             sum+=item.getSum();
         }
         return sum;
+    }
+
+    public static void addPopularityToProductsFromOrder(Order order){
+        for(OrderItem item:order.getOrderItems())
+        {
+            item.getProduct().addPopularity(item.getCount());
+        }
     }
 }

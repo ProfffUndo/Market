@@ -27,7 +27,7 @@ public class OrderItem {
     @ManyToOne
     private Order order;
 
-    private Long count;
+    private int count;
 
     @Override
     public String toString() {

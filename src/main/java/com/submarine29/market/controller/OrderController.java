@@ -1,7 +1,6 @@
 package com.submarine29.market.controller;
 
 import com.submarine29.market.domain.Order;
-import com.submarine29.market.domain.Role;
 import com.submarine29.market.domain.Status;
 import com.submarine29.market.domain.User;
 import com.submarine29.market.repo.OrderRepo;
@@ -10,7 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.Objects;
 
 @Controller
 @RequestMapping("/orders")
@@ -42,11 +46,11 @@ public class OrderController {
     @GetMapping("get_order/{orderId}")
     public String showOrder(@PathVariable("orderId") Order order, @AuthenticationPrincipal User currentUser,
                             Model model) {
-        if (!currentUser.isManager()) {
-            return "error/error";
+        if (currentUser.isManager() || Objects.equals(order.getUser().getId(), currentUser.getId())) {
+            model.addAttribute("order", order);
+            return "order/show";
         }
-        model.addAttribute("order", order);
-        return "order/show";
+        return "error/error";
     }
 
     @GetMapping("set_status/{orderId}")
