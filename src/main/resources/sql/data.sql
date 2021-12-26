@@ -114,73 +114,78 @@ insert into product (id, description, image_path, name, price, category_id, amou
 
 
 --все заказы привязаны к юзерам, так что добавим одного для примера
-insert into usr (id, email,login, first_name,second_name, gender, last_visit, locale,  password, phone,  userpic)
-values (0,'devil@hell.com','devil','Сатана','Великий','муж', '2021-11-22 17:51:16.479536','ru','devil',null,null);
+-- Пароль - pwd
+insert into usr (id, name, surname, patronymic, email, phone, username, login, password)
+values (666, 'Сатана', 'Великий', null, '666@hell.ru','666','devil', 'little_pony', '$2a$16$yiH72U7wkkDolpORc9Ngg.uqNBDJhf046UmkrGxmeRhUeqZIDerc2');
+-- Пароль - admin
+insert into usr (id, name, surname, patronymic, email, phone, username, login, password)
+values (1, 'Иванов', 'Иван', 'Иванович', 'admin@support.ru','+7777777777','admin', 'admin', '$2a$16$3EaschnHam98cYsT8wydIu0vi7iLz9lHPQoMgQOAJjAaYbVCJieRi');
 
-insert into usr (id, email,login, first_name,second_name, gender, last_visit, locale,  password, phone,  userpic)
-values (1,'kirill@gmail.com','kirill','Кирилл','Кузнецов','муж', '2021-11-22 17:51:16.479536','ru','kirill',null,null);
-insert into usr (id, email,login, first_name,second_name, gender, last_visit, locale,  password, phone,  userpic)
-values (2,'ivan@gmail.com','ivan','Иван','Софронов','муж', '2021-11-22 17:51:16.479536','ru','ivan',null,null);
-insert into usr (id, email,login, first_name,second_name, gender, last_visit, locale,  password, phone,  userpic)
-values (3,'vasilina@gmail.com','vasilina','Василина','Сапрыкина','жен', '2021-11-22 17:51:16.479536','ru','vasilina',null,null);
-insert into usr (id, email,login, first_name,second_name, gender, last_visit, locale,  password, phone,  userpic)
-values (4,'sasha@gmail.com','sasha','Александр','Коромыслов','муж', '2021-11-22 17:51:16.479536','ru','sasha',null,null);
-insert into usr (id, email,login, first_name,second_name, gender, last_visit, locale,  password, phone,  userpic)
-values (5,'ilya@gmail.com','ilya','Илья','Волочинский','муж', '2021-11-22 17:51:16.479536','ru','ilya',null,null);
-insert into usr (id, email,login, first_name,second_name, gender, last_visit, locale,  password, phone,  userpic)
-values (6,'petr@gmail.com','petr','Пётр','Первый','муж', '2021-11-22 17:51:16.479536','ru','petr',null,null);
-insert into usr (id, email,login, first_name,second_name, gender, last_visit, locale,  password, phone,  userpic)
-values (7,'aidar@gmail.com','aidar','Айдар','Из Кулатки','муж', '2021-11-22 17:51:16.479536','ru','aidar',null,null);
-insert into usr (id, email,login, first_name,second_name, gender, last_visit, locale,  password, phone,  userpic)
-values (8,'lena@gmail.com','lena','Лена','Из Уфы','жен', '2021-11-22 17:51:16.479536','ru','lena',null,null);
+-- Интересно, но избыточно
+-- insert into usr (id, email,login, first_name,second_name, gender, last_visit, locale,  password, phone,  userpic)
+-- values (1,'kirill@gmail.com','kirill','Кирилл','Кузнецов','муж', '2021-11-22 17:51:16.479536','ru','kirill',null,null);
+-- insert into usr (id, email,login, first_name,second_name, gender, last_visit, locale,  password, phone,  userpic)
+-- values (2,'ivan@gmail.com','ivan','Иван','Софронов','муж', '2021-11-22 17:51:16.479536','ru','ivan',null,null);
+-- insert into usr (id, email,login, first_name,second_name, gender, last_visit, locale,  password, phone,  userpic)
+-- values (3,'vasilina@gmail.com','vasilina','Василина','Сапрыкина','жен', '2021-11-22 17:51:16.479536','ru','vasilina',null,null);
+-- insert into usr (id, email,login, first_name,second_name, gender, last_visit, locale,  password, phone,  userpic)
+-- values (4,'sasha@gmail.com','sasha','Александр','Коромыслов','муж', '2021-11-22 17:51:16.479536','ru','sasha',null,null);
+-- insert into usr (id, email,login, first_name,second_name, gender, last_visit, locale,  password, phone,  userpic)
+-- values (5,'ilya@gmail.com','ilya','Илья','Волочинский','муж', '2021-11-22 17:51:16.479536','ru','ilya',null,null);
+-- insert into usr (id, email,login, first_name,second_name, gender, last_visit, locale,  password, phone,  userpic)
+-- values (6,'petr@gmail.com','petr','Пётр','Первый','муж', '2021-11-22 17:51:16.479536','ru','petr',null,null);
+-- insert into usr (id, email,login, first_name,second_name, gender, last_visit, locale,  password, phone,  userpic)
+-- values (7,'aidar@gmail.com','aidar','Айдар','Из Кулатки','муж', '2021-11-22 17:51:16.479536','ru','aidar',null,null);
+-- insert into usr (id, email,login, first_name,second_name, gender, last_visit, locale,  password, phone,  userpic)
+-- values (8,'lena@gmail.com','lena','Лена','Из Уфы','жен', '2021-11-22 17:51:16.479536','ru','lena',null,null);
 
-insert into user_role (user_id, roles) VALUES (0,'USER');
+insert into user_role (user_id, roles) VALUES (666,'USER');
 insert into user_role (user_id, roles) VALUES (1,'USER');
-insert into user_role (user_id, roles) VALUES (2,'USER');
-insert into user_role (user_id, roles) VALUES (3,'USER');
-insert into user_role (user_id, roles) VALUES (4,'USER');
-insert into user_role (user_id, roles) VALUES (5,'USER');
-insert into user_role (user_id, roles) VALUES (6,'USER');
-insert into user_role (user_id, roles) VALUES (7,'USER');
-insert into user_role (user_id, roles) VALUES (8,'USER');
+-- insert into user_role (user_id, roles) VALUES (2,'USER');
+-- insert into user_role (user_id, roles) VALUES (3,'USER');
+-- insert into user_role (user_id, roles) VALUES (4,'USER');
+-- insert into user_role (user_id, roles) VALUES (5,'USER');
+-- insert into user_role (user_id, roles) VALUES (6,'USER');
+-- insert into user_role (user_id, roles) VALUES (7,'USER');
+-- insert into user_role (user_id, roles) VALUES (8,'USER');
 
-insert into user_role (user_id, roles) VALUES (1,'MANAGER');
-insert into user_role (user_id, roles) VALUES (2,'MANAGER');
-insert into user_role (user_id, roles) VALUES (3,'MANAGER');
-insert into user_role (user_id, roles) VALUES (4,'MANAGER');
-insert into user_role (user_id, roles) VALUES (5,'MANAGER');
+-- insert into user_role (user_id, roles) VALUES (1,'MANAGER');
+-- insert into user_role (user_id, roles) VALUES (2,'MANAGER');
+-- insert into user_role (user_id, roles) VALUES (3,'MANAGER');
+-- insert into user_role (user_id, roles) VALUES (4,'MANAGER');
+-- insert into user_role (user_id, roles) VALUES (5,'MANAGER');
 
 insert into user_role (user_id, roles) VALUES (1,'ADMIN');
-insert into user_role (user_id, roles) VALUES (2,'ADMIN');
-insert into user_role (user_id, roles) VALUES (3,'ADMIN');
-insert into user_role (user_id, roles) VALUES (4,'ADMIN');
+-- insert into user_role (user_id, roles) VALUES (2,'ADMIN');
+-- insert into user_role (user_id, roles) VALUES (3,'ADMIN');
+-- insert into user_role (user_id, roles) VALUES (4,'ADMIN');
 
-insert into orders values (1,'заранее позвонить','Мурманская область,городской округ Александровск, Оленья Губа, д3',TIMESTAMP '2021-12-31 15:30:00','PAID',5);
-insert into orders values (2,'','Ульяновская область,ПГТ Старая Кулатка, д31',TIMESTAMP '2022-01-04 12:00:00','SENT',7);
-insert into orders values (3,'звонить в домофон','г.Москва, Каширское шоссе, д13 к1 кв 32',TIMESTAMP '2021-12-29 18:00:00','PAID',8);
-insert into orders values (4,'','г.Улан-Удэ, ул.Чкалова, д49 кв 13',TIMESTAMP '2022-02-18 10:00:00','SENT',0);
-insert into orders values (5,'звонить в колокол','г.Ярославль, ул.Ленина, д60В кв 73',TIMESTAMP '2021-12-24 17:30:00','PAID',4);
+-- insert into orders values (1,'заранее позвонить','Мурманская область,городской округ Александровск, Оленья Губа, д3',TIMESTAMP '2021-12-31 15:30:00','PAID',5);
+-- insert into orders values (2,'','Ульяновская область,ПГТ Старая Кулатка, д31',TIMESTAMP '2022-01-04 12:00:00','SENT',7);
+-- insert into orders values (3,'звонить в домофон','г.Москва, Каширское шоссе, д13 к1 кв 32',TIMESTAMP '2021-12-29 18:00:00','PAID',8);
+-- insert into orders values (4,'','г.Улан-Удэ, ул.Чкалова, д49 кв 13',TIMESTAMP '2022-02-18 10:00:00','SENT',0);
+-- insert into orders values (5,'звонить в колокол','г.Ярославль, ул.Ленина, д60В кв 73',TIMESTAMP '2021-12-24 17:30:00','PAID',4);
 
-insert into order_item (id, order_id, product_id, count) values (1,2,1,1);
-insert into order_item (id, order_id, product_id, count) values (2,1,1,2);
-insert into order_item (id, order_id, product_id, count) values (3,1,2,3);
-insert into order_item (id, order_id, product_id, count) values (4,5,2,4);
-insert into order_item (id, order_id, product_id, count) values (5,2,3,1);
-insert into order_item (id, order_id, product_id, count) values (6,1,3,1);
-insert into order_item (id, order_id, product_id, count) values (7,2,3,2);
-insert into order_item (id, order_id, product_id, count) values (8,3,3,5);
-insert into order_item (id, order_id, product_id, count) values (9,5,3,3);
-insert into order_item (id, order_id, product_id, count) values (10,3,4,10);
-insert into order_item (id, order_id, product_id, count) values (11,1,4,7);
-insert into order_item (id, order_id, product_id, count) values (12,3,4,4);
-insert into order_item (id, order_id, product_id, count) values (13,2,4,1);
-insert into order_item (id, order_id, product_id, count) values (14,1,5,1);
-insert into order_item (id, order_id, product_id, count) values (15,5,5,2);
-insert into order_item (id, order_id, product_id, count) values (16,1,5,1);
-insert into order_item (id, order_id, product_id, count) values (17,3,5,1);
-insert into order_item (id, order_id, product_id, count) values (18,4,1,3);
-insert into order_item (id, order_id, product_id, count) values (19,1,2,17);
-insert into order_item (id, order_id, product_id, count) values (20,3,1,20);
+-- insert into order_item (id, order_id, product_id, count) values (1,2,1,1);
+-- insert into order_item (id, order_id, product_id, count) values (2,1,1,2);
+-- insert into order_item (id, order_id, product_id, count) values (3,1,2,3);
+-- insert into order_item (id, order_id, product_id, count) values (4,5,2,4);
+-- insert into order_item (id, order_id, product_id, count) values (5,2,3,1);
+-- insert into order_item (id, order_id, product_id, count) values (6,1,3,1);
+-- insert into order_item (id, order_id, product_id, count) values (7,2,3,2);
+-- insert into order_item (id, order_id, product_id, count) values (8,3,3,5);
+-- insert into order_item (id, order_id, product_id, count) values (9,5,3,3);
+-- insert into order_item (id, order_id, product_id, count) values (10,3,4,10);
+-- insert into order_item (id, order_id, product_id, count) values (11,1,4,7);
+-- insert into order_item (id, order_id, product_id, count) values (12,3,4,4);
+-- insert into order_item (id, order_id, product_id, count) values (13,2,4,1);
+-- insert into order_item (id, order_id, product_id, count) values (14,1,5,1);
+-- insert into order_item (id, order_id, product_id, count) values (15,5,5,2);
+-- insert into order_item (id, order_id, product_id, count) values (16,1,5,1);
+-- insert into order_item (id, order_id, product_id, count) values (17,3,5,1);
+-- insert into order_item (id, order_id, product_id, count) values (18,4,1,3);
+-- insert into order_item (id, order_id, product_id, count) values (19,1,2,17);
+-- insert into order_item (id, order_id, product_id, count) values (20,3,1,20);
 
 drop sequence com_seq;
 create sequence com_seq start 50 increment 1;

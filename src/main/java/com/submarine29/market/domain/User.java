@@ -4,14 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.URL;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
-import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -24,35 +21,26 @@ import java.util.Set;
 @Table(name = "usr")
 public class User implements UserDetails {
 
-    /**
-     * ВНИМАТЕЛЬНО!!!
-     * Я не знаю, почему изначально класс был сериализуем. Но допустим.
-     * Я его изменил. Если убрать это, он не будет работать, потому что несовпадение со старой версией.
-     * Либо я что-то не так понял.
-     */
     private static final long serialVersionUID = -678788959254984266L;
 
     @Id
     private Long id;
-    private String firstName;//не ставлю NotBlank, так как иначе не добавить товары в корзину
-    private String secondName;
-    @URL(message = "Введите ссылку на фотографию")
-    private String userpic; //Почему String?
+    private String name;//не ставлю NotBlank, так как иначе не добавить товары в корзину
+    private String surname;
+    private String patronymic;
     @Email
     private String email;
-    private String gender;
-    private String locale;
-    @Column(unique = true)
+    @Pattern(regexp = "^((8|\\+7)[\\- ]?)?(\\(?\\d{3}\\)?[\\- ]?)?[\\d\\- ]{7,10}$",
+            message = "Номер телефона введен не верно")
+    private String phone;
+    @Size(min = 3, max = 20)
+    private String username;
+    @Size(min = 3, max = 20)
     private String login; //! не применяется почему-то, выполните 151 строку в data.sql
     @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&-+=().])(?=\\\\S+$).{8,20}$",
             message = "Пароль должен состоять из восьми или более символов латинского алфавита, " +
                     "содержать заглавные и строчные буквы, цифры и специальные символы @ # $ % ^ & - + = ( ) .")
     private String password;
-    @Pattern(regexp = "^((8|\\+7)[\\- ]?)?(\\(?\\d{3}\\)?[\\- ]?)?[\\d\\- ]{7,10}$",
-            message = "Номер телефона введен не верно")
-    private String phone;
-    @PastOrPresent
-    private LocalDateTime lastVisit;
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
@@ -83,7 +71,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return email;
+        return login;
     }
 
     @Override

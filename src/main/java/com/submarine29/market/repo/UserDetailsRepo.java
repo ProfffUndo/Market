@@ -12,4 +12,6 @@ public interface UserDetailsRepo extends JpaRepository<User,Long> {
 
     @Override
     Optional<User> findById(Long s);
+
+    User findByLogin(String login);
 }

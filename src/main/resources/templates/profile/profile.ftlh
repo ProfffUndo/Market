@@ -46,10 +46,9 @@
     </#if>
 
     <#if currentUser.id == user.id || isManager>
-        <a href="/orders/${currentUser.id}">Список заказов</a>
+        <a href="/orders/${currentUser.id}"><h6>Список заказов</h6></a>
     </#if>
 
-    <br/>
     <br/>
 
     <#if currentUser.id == user.id>
