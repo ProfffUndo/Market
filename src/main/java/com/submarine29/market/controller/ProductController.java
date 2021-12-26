@@ -157,7 +157,7 @@ public class ProductController {
         if (!user.isManager()) {
             return "error/error";
         }
-        return validationService.createUpsertErrorModel("products/new", categoryName, product, bindingResult, model);
+        return validationService.createUpsertErrorModel("products/new", categoryName, product, bindingResult, model,true);
     }
 
     @GetMapping("{id}/edit")
@@ -170,6 +170,7 @@ public class ProductController {
         String oldPrice = product.getPrice() + "";
         model.addAttribute("priceOld", oldPrice.replace(',', '.'));
         model.addAttribute("categories", categoryRepo.findAll());
+        model.addAttribute("categoryOld",product.getCategory().getName());
         return "products/edit";
     }
 
@@ -182,7 +183,7 @@ public class ProductController {
         if (!user.isManager()) {
             return "error/error";
         }
-        return validationService.createUpsertErrorModel("products/edit", categoryName, product, bindingResult, model);
+        return validationService.createUpsertErrorModel("products/edit", categoryName, product, bindingResult, model,false);
     }
 
     @PostMapping("{id}/delete")

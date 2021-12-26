@@ -51,6 +51,7 @@ public class BasketService {
                 item.setProduct(product);
                 item.setOrder(currentOrder);
                 item.setCount(1L);
+                checkAmountOfProductBeforeAdd(product,item);
                 orderRepo.save(currentOrder);
                 orderItemRepo.save(item);
             } else {
@@ -59,6 +60,7 @@ public class BasketService {
                 while (itemIter.hasNext()) {
                     itemFromCurrentOrder = itemIter.next();
                     if (itemFromCurrentOrder.getProduct().equals(product)) {
+                        checkAmountOfProductBeforeAdd(product,itemFromCurrentOrder);
                         itemFromCurrentOrder.setCount(itemFromCurrentOrder.getCount() + 1);
                         return;
                     }
@@ -67,10 +69,13 @@ public class BasketService {
                 item.setProduct(product);
                 item.setOrder(currentOrder);
                 item.setCount(1L);
+                checkAmountOfProductBeforeAdd(product,item);
                 orderItemRepo.save(item);
             }
         } catch (NoSuchElementException e) {
             throw new SecurityException("Пользователь не авторизован", e);
+        }   catch (IllegalArgumentException e){
+            throw new IllegalArgumentException("Попытка добавить в корзину товара больше чем на складе");
         }
 
     }
@@ -109,7 +114,6 @@ public class BasketService {
                             break;
                         }
                     }
-
                     if (orderItems.isEmpty()) {
                         orderRepo.delete(currentOrder);
                     }
@@ -129,6 +133,25 @@ public class BasketService {
             orderItemRepo.delete(orderItem);
             orderItems.remove(orderItem);
         }
+    }
 
+    private void checkAmountOfProductBeforeAdd(Product product, OrderItem item) throws IllegalArgumentException{
+        if(product.getAmount()<=item.getCount())
+            throw new IllegalArgumentException("Товар закончился");
+    }
+
+    public static void checkAmountOfProductBeforePayment(Order order) throws IllegalArgumentException{
+        for(OrderItem item:order.getOrderItems())
+            if(item.getCount()>item.getProduct().getAmount())
+                throw new IllegalArgumentException("Попытка купить больше товара, чем на складе");
+    }
+
+    public static double calculateSum(Order order){
+        double sum=0;
+        for(OrderItem item:order.getOrderItems())
+        {
+            sum+=item.getSum();
+        }
+        return sum;
     }
 }

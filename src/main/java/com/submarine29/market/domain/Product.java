@@ -8,6 +8,9 @@ import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.URL;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.List;
@@ -18,30 +21,30 @@ import java.util.Objects;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name="product")
-public class Product implements Serializable {
+@Table(name = "product")
+public class Product{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO,
             generator = "com_seq")
     private Long id;
-    @Size(min=1,max=100)
+    @Size(min = 1, max = 100)
     private String name;
     @Column(length = 4000)
-    @Size(min=10,max=4000)
+    @Size(min = 10, max = 4000)
     private String description;
     private double price; //Валидируется на хосте в upsert_product на 25 строке.
-    // Изменила регулярное выражение, чтобы нельзя было поставить 0.00 рублей
     @URL(message = "Введите ссылку на фотографию товара") //Написать regex
     private String imagePath;
     @ManyToOne
     @JsonIgnore
     private Category category; //TODO выводить имя
-    @OneToMany
-    @JoinColumn(name = "product_id")
-    @JsonIgnore
-    private List<OrderItem> orderItems;
-    //  private int amount; //количество товара, пока вопрос высчитывать как-то?
-    //характеристики? цвет/мощность...
+//    @OneToMany
+//    @JoinColumn(name = "product_id")
+//    @JsonIgnore
+//    private List<OrderItem> orderItems;
+    @Max(10000)
+    @Min(0)
+    private int amount;
 
 
     @Override

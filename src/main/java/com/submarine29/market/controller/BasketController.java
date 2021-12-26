@@ -41,14 +41,24 @@ public class BasketController {
             model.addAttribute("order", new Order());
         }else {
             Long basketOrderId=basketService.getBasketOrder(0L);
-            model.addAttribute("order", orderRepo.findById(basketOrderId).get());
+            Order order=orderRepo.findById(basketOrderId).get();
+            model.addAttribute("order", order);
+            try{
+                BasketService.checkAmountOfProductBeforePayment(order);
+                model.addAttribute("calculatedSum",BasketService.calculateSum(order));
+            }catch (IllegalArgumentException e){
+                model.addAttribute("amountError","Недостаточно товара на складе");
+            }
         }
         return "basket/basket";
     }
 
     @PostMapping("/add")
     public String addProductToBasket(@ModelAttribute("product_id") Long productId){
-        basketService.addProductToOrder(0L,productId);
+        try {
+            basketService.addProductToOrder(0L, productId);
+        }
+        catch (IllegalArgumentException e){}
         return "redirect:/basket";
     }
 

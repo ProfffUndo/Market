@@ -22,7 +22,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Entity
 @Table(name = "usr")
-public class User implements UserDetails, Serializable {
+public class User implements UserDetails {
 
     /**
      * ВНИМАТЕЛЬНО!!!
@@ -105,4 +105,11 @@ public class User implements UserDetails, Serializable {
     public boolean isEnabled() {
         return false;
     }
+
+    public List<Order> getPaidOrders(){
+        List<Order> orderList=this.getOrders();
+        orderList.removeIf(t->t.getStatus()==Status.NEW);
+        return orderList;
+    }
+
 }

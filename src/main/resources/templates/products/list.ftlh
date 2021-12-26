@@ -82,6 +82,7 @@
                             <a href="/products/${product.id}">
                                 <div class="card-title" style="font-size: 20px; font-weight: bold;">${product.name}</div>
                             </a>
+                            <div class="card-text" style="font-weight: bold">Кол-во товара на складе: ${product.amount} шт.</div>
                             <div class="card-text">${product.description}</div>
                         </div>
                         <div class="child" style="width: 20%; float: right; display: flex; justify-content: center; align-items: center; flex-direction: column ">
