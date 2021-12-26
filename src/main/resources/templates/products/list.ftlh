@@ -45,44 +45,34 @@
 
 <@c.page>
 
-    <div style="margin-left: 20%">
-        <#if user?? && isManager>
-            <form method="get">
-                <a href="/products/new" class="btn btn-primary">Создать товар</a>
+    <#if user?? && isManager>
+        <div>
+            <form method="get" style="display: inline-block">
+                    <a href="/products/new" class="btn btn-primary">Создать товар</a>
             </form>
-        </#if>
-        <br/>
-
-<#--        <div class="dropdown">-->
-<#--            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">-->
-<#--                Сортировка-->
-<#--            </button>-->
-<!--            <div class="dropdown-menu" aria-labelledby="dropdownMenu2">-->
-<#--                <a class="dropdown-item" href="${urlForSort}&sort=priceup">По возрастанию цены</a>-->
-<#--                <a class="dropdown-item" href="${urlForSort}&sort=pricedown">По убыванию цены</a>-->
-<#--            </div>-->
-<#--        </div>-->
-
-<#--        </br>-->
-
-        <@p.pager url productsPage/>
-
-        <div class="dropdown">
-            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Сортировка
-            </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                <a class="dropdown-item" href="${urlForSort}&sort=priceup">По возрастанию цены</a>
-                <a class="dropdown-item" href="${urlForSort}&sort=pricedown">По убыванию цены</a>
-            </div>
+            <form method="get" style="display: inline-block">
+                <a href="/category/new" class="btn btn-primary">Создать категорию</a>
+            </form>
         </div>
+    </#if>
+    <br/>
+    <@p.pager url productsPage/>
 
-        </br>
+    <div class="dropdown">
+        <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Сортировка
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+            <a class="dropdown-item" href="${urlForSort}&sort=priceup">По возрастанию цены</a>
+            <a class="dropdown-item" href="${urlForSort}&sort=pricedown">По убыванию цены</a>
+        </div>
+    </div>
 
-        <#list productsPage.content as product>
-            <div class="card w-100">
-                <div class="card-body">
-                    <div class="parent">
+    </br>
+    <#list productsPage.content as product>
+        <div class="card w-100">
+            <div class="card-body">
+                <div class="parent">
 
                         <div class="child" style="width: 20%; float: left; border: 1px solid lightgrey;">
                             <img class="card-img-top img-fluid" src="${product.imagePath}" alt="Пикча">

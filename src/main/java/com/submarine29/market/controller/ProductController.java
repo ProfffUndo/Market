@@ -4,7 +4,6 @@ import com.submarine29.market.domain.Category;
 import com.submarine29.market.domain.Product;
 import com.submarine29.market.dto.DataForFindDTO;
 import com.submarine29.market.services.ValidationService;
-import com.submarine29.market.domain.Role;
 import com.submarine29.market.domain.User;
 import com.submarine29.market.repo.CategoryRepo;
 import com.submarine29.market.repo.ProductRepo;
@@ -141,7 +140,7 @@ public class ProductController {
     @GetMapping("new")
     public String newProduct(@AuthenticationPrincipal User user,
                              Model model) {
-        if (!user.getAuthorities().contains(Role.MANAGER)) {
+        if (!user.isManager()) {
             return "error/error";
         }
         model.addAttribute("priceOld","0.0");
@@ -155,7 +154,7 @@ public class ProductController {
                          @Valid Product product,
                          BindingResult bindingResult,
                          Model model) {
-        if (!user.getAuthorities().contains(Role.MANAGER)) {
+        if (!user.isManager()) {
             return "error/error";
         }
         return validationService.createUpsertErrorModel("products/new", categoryName, product, bindingResult, model);
@@ -164,7 +163,7 @@ public class ProductController {
     @GetMapping("{id}/edit")
     public String updateProduct(@AuthenticationPrincipal User user,
                                 Model model, @PathVariable("id") Product product) {
-        if (!user.getAuthorities().contains(Role.MANAGER)) {
+        if (!user.isManager()) {
             return "error/error";
         }
         model.addAttribute("product", product);
@@ -180,7 +179,7 @@ public class ProductController {
                          @Valid Product product,
                          BindingResult bindingResult,
                          Model model) {
-        if (!user.getAuthorities().contains(Role.MANAGER)) {
+        if (!user.isManager()) {
             return "error/error";
         }
         return validationService.createUpsertErrorModel("products/edit", categoryName, product, bindingResult, model);
@@ -189,7 +188,7 @@ public class ProductController {
     @PostMapping("{id}/delete")
     public String delete(@AuthenticationPrincipal User user,
                          @PathVariable("id") Product product) {
-        if (!user.getAuthorities().contains(Role.MANAGER)) {
+        if (!user.isManager()) {
             return "error/error";
         }
         productRepo.delete(product);

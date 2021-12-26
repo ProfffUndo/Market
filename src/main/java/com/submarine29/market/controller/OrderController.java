@@ -1,49 +1,58 @@
 package com.submarine29.market.controller;
 
 import com.submarine29.market.domain.Order;
-import com.submarine29.market.domain.OrderItem;
-import com.submarine29.market.domain.Product;
+import com.submarine29.market.domain.Role;
+import com.submarine29.market.domain.Status;
+import com.submarine29.market.domain.User;
 import com.submarine29.market.repo.OrderRepo;
-import org.springframework.beans.BeanUtils;
+import com.submarine29.market.repo.UserDetailsRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
-@RestController
+@Controller
 @RequestMapping("/orders")
 public class OrderController {
+
     private final OrderRepo orderRepo;
+    private final UserDetailsRepo userRepo;
 
     @Autowired
-    public OrderController(OrderRepo orderRepo) {
+    public OrderController(OrderRepo orderRepo, UserDetailsRepo userRepo) {
         this.orderRepo = orderRepo;
+        this.userRepo = userRepo;
     }
 
-    @GetMapping
-    public List<Order> list() {
-        return orderRepo.findAll();
+    @GetMapping("{userId}")
+    public String getOrdersOfUser(@PathVariable String userId,
+                                  @AuthenticationPrincipal User currentUser, Model model) {
+        User user = userRepo.findById(ControllerUtil.createNormalniyIdFromUserBleat(userId)).get();
+        if (!currentUser.isManager() && !currentUser.getId().equals(user.getId())) {
+            return "error/error";
+        }
+        if (currentUser.isManager()) {
+            model.addAttribute("statuses", Status.values());
+        }
+        model.addAttribute("orders", user.getOrders());
+        return "order/list";
     }
 
-    @GetMapping("{id}")
-    public Order getOne(@PathVariable("id") Order order) {
-        return order;
+    @GetMapping("get_order/{orderId}")
+    public String showOrder(@PathVariable("orderId") Order order, @AuthenticationPrincipal User currentUser,
+                            Model model) {
+        if (!currentUser.isManager()) {
+            return "error/error";
+        }
+        model.addAttribute("order", order);
+        return "order/show";
     }
 
-    @PostMapping
-    public Order create(@RequestBody Order order) {
-        return orderRepo.save(order);
-    }
-
-    @DeleteMapping("{id}")
-    public void delete(@PathVariable("id") Order order) {
-        orderRepo.delete(order);
-    }
-
-    @PutMapping("{id}")
-    public Order update(@PathVariable("id") Order orderFromDB, @RequestBody Order orderNew) {
-        BeanUtils.copyProperties(orderNew, orderFromDB, "id");
-        return orderRepo.save(orderFromDB);
+    @GetMapping("set_status/{orderId}")
+    public String setStatus(@PathVariable("orderId") Order order, @RequestParam("status") String newStatus) {
+        order.setStatus(Status.valueOf(newStatus));
+        orderRepo.save(order);
+        return "redirect:/orders/" + order.getUser().getId();
     }
 }

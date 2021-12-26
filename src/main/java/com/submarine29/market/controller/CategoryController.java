@@ -1,16 +1,21 @@
 package com.submarine29.market.controller;
 
 import com.submarine29.market.domain.Category;
-import com.submarine29.market.domain.Product;
+import com.submarine29.market.domain.Role;
+import com.submarine29.market.domain.User;
 import com.submarine29.market.repo.CategoryRepo;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import javax.validation.Valid;
+import java.util.HashMap;
+import java.util.Map;
 
-@RestController
+@Controller
 @RequestMapping("/category")
 public class CategoryController {
     private final CategoryRepo categoryRepo;
@@ -20,29 +25,28 @@ public class CategoryController {
         this.categoryRepo = categoryRepo;
     }
 
-    @GetMapping
-    public List<Category> list() {
-        return categoryRepo.findAll();
+    @GetMapping("/new")
+    public String list(@AuthenticationPrincipal User user) {
+        if (!user.isManager()) {
+            return "error/error";
+        }
+        return "category/new";
     }
 
-    @GetMapping("{id}")
-    public Category getOne(@PathVariable("id") Category category) {
-        return category;
-    }
-
-    @PostMapping
-    public Category create(@RequestBody Category category) {
-        return categoryRepo.save(category);
-    }
-
-    @DeleteMapping("{id}")
-    public void delete(@PathVariable("id") Category category) {
-        categoryRepo.delete(category);
-    }
-
-    @PutMapping("{id}")
-    public Category update(@PathVariable("id") Category categoryFromDB, @RequestBody Category categoryNew) {
-        BeanUtils.copyProperties(categoryNew, categoryFromDB, "id");
-        return categoryRepo.save(categoryFromDB);
+    @PostMapping("new/new")
+    public String create(@AuthenticationPrincipal User user,
+                         @Valid Category category, BindingResult bindingResult,
+                         Model model) {
+        if (!user.isManager()) {
+            return "error/error";
+        }
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("category", category);
+            Map<String, String> errorsMap = new HashMap<>(ControllerUtil.getErrors(bindingResult));
+            model.mergeAttributes(errorsMap);
+            return "category/new";
+        }
+        categoryRepo.save(category);
+        return "redirect:/products";
     }
 }

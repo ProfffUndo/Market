@@ -4,7 +4,7 @@
 
 <@c.page>
     <#if comment ??>
-        ${comment}
+        <h3>${comment}</h3>
     </#if>
     <#if order.orderItems ??>
         <div class="parent">

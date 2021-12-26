@@ -10,6 +10,6 @@ public interface UserDetailsRepo extends JpaRepository<User,Long> {
     @Override
     List<User> findAll();
 
-  @Override
+    @Override
     Optional<User> findById(Long s);
 }

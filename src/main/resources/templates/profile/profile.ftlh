@@ -21,6 +21,37 @@
            placeholder="Был в сети в последний раз" readonly="readonly">
     <br/>
 
+    <#if user?? && isAdmin>
+        <form action="/profile/set_roles/${currentUser.id}" method="post">
+            <div>
+                <div style="display: inline-block">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" <#if managerCheck??>checked</#if> id="setManager"
+                               value="yes" name="manager">
+                        <label class="form-check-label" for="setManager">Менеджер</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" <#if adminCheck??>checked</#if> id="setAdmin"
+                               value="yes" name="admin">
+                        <label class="form-check-label" for="setAdmin">Администратор</label>
+                    </div>
+                </div>
+                <div style="display: inline-block">
+                    <input type="submit" class="btn btn-primary btn-sm" value="Применить роли">
+                </div>
+            </div>
+        </form>
+
+        <br/>
+    </#if>
+
+    <#if currentUser.id == user.id || isManager>
+        <a href="/orders/${currentUser.id}">Список заказов</a>
+    </#if>
+
+    <br/>
+    <br/>
+
     <#if currentUser.id == user.id>
         <form method="get">
             <a href="/logout" class="btn btn-primary">Выйти</a>
