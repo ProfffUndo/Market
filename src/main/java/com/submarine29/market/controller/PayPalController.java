@@ -3,6 +3,7 @@ package com.submarine29.market.controller;
 import com.submarine29.market.domain.Order;
 import com.submarine29.market.domain.OrderItem;
 import com.submarine29.market.domain.Status;
+import com.submarine29.market.services.BasketService;
 import com.submarine29.market.services.PayPalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,6 +28,8 @@ public class PayPalController {
     public String payment(@PathVariable("id") Order order) {
         try {
 
+            BasketService.checkAmountOfProductBeforePayment(order);
+
             List<OrderItem> orderItems = order.getOrderItems();
             double total = 0.00;
 
@@ -47,6 +50,9 @@ public class PayPalController {
         } catch (PayPalRESTException e) {
 
             e.printStackTrace();
+        } catch (IllegalArgumentException e){
+            return "error/error";
+           // throw new IllegalArgumentException("Недостаточно товара на складе",e);
         }
         return "redirect:/";
     }

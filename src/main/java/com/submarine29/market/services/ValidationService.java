@@ -23,14 +23,14 @@ public class ValidationService {
     public String createUpsertErrorModel(String errorUrl, String categoryName,
                                           Product product,
                                           BindingResult bindingResult,
-                                          Model model) {
+                                          Model model, boolean isNew) {
         Map<String, String> errorsMap = new HashMap<>();
         Category category = categoryRepo.findByName(categoryName);
         if (category == null) {
             errorsMap.put("categoryError", "Необходимо выбрать категорию товара!");
         }
 
-        if (productRepo.findByName(product.getName()) != null){
+        if (isNew && productRepo.findByName(product.getName()) != null){
             errorsMap.put("productNameError", "Товар с таким названием уже существует!");
         }
 

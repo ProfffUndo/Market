@@ -1,5 +1,6 @@
 package com.submarine29.market.controller;
 
+import com.submarine29.market.domain.Category;
 import com.submarine29.market.domain.Product;
 import com.submarine29.market.services.ValidationService;
 import com.submarine29.market.domain.User;
@@ -16,6 +17,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @Controller
@@ -96,7 +99,7 @@ public class ProductController {
         if (!user.isManager()) {
             return "error/error";
         }
-        return validationService.createUpsertErrorModel("products/new", categoryName, product, bindingResult, model);
+        return validationService.createUpsertErrorModel("products/new", categoryName, product, bindingResult, model,true);
     }
 
     @GetMapping("{id}/edit")
@@ -109,6 +112,7 @@ public class ProductController {
         String oldPrice = product.getPrice() + "";
         model.addAttribute("priceOld", oldPrice.replace(',', '.'));
         model.addAttribute("categories", categoryRepo.findAll());
+        model.addAttribute("categoryOld",product.getCategory().getName());
         return "products/edit";
     }
 
@@ -121,7 +125,7 @@ public class ProductController {
         if (!user.isManager()) {
             return "error/error";
         }
-        return validationService.createUpsertErrorModel("products/edit", categoryName, product, bindingResult, model);
+        return validationService.createUpsertErrorModel("products/edit", categoryName, product, bindingResult, model,false);
     }
 
     @PostMapping("{id}/delete")

@@ -35,7 +35,7 @@ public class OrderController {
         if (currentUser.isManager()) {
             model.addAttribute("statuses", Status.values());
         }
-        model.addAttribute("orders", user.getOrders());
+        model.addAttribute("orders", user.getPaidOrders());
         return "order/list";
     }
 

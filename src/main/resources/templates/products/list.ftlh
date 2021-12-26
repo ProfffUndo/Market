@@ -38,6 +38,10 @@
                             <input type="hidden" name="product_id" value="${product.id}"/>
                         </form>
                     </div>
+                    <div class="child" style="width: 10%; float: right;">
+                        <div class="card-text">Кол-во товара на складе:</div>
+                        <div class="card-text">${product.amount}</div>
+                    </div>
                 </div>
             </div>
         </div>

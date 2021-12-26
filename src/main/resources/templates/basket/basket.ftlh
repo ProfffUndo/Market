@@ -47,10 +47,17 @@
                     </tbody>
                 </table>
             </div>
+
             <div class="child" style="width: 15%; float: right;">
+                <#if amountError ??>
+                <h3>${amountError}</h3>
+                <#else>
                 <form method="post" action="/basket/pay/${order.id}">
                     <input type="submit" value="Оформить заказ" class="btn btn-primary"/>
                 </form>
+                <br/>
+                <div style="font-size: 16px; margin-top: 5px; font-weight: bold">Всего ${calculatedSum} руб.</div>
+                </#if>
             </div>
         </div>
     </#if>

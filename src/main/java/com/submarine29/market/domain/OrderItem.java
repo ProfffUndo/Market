@@ -15,7 +15,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @Entity
 @Table(name="order_item")
-public class OrderItem implements Serializable {
+public class OrderItem {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO,
             generator = "com_seq")
