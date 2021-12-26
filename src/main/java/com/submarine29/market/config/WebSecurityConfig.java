@@ -44,7 +44,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             User user = userDetailsRepo.findById(id).orElseGet(() -> {  //Если нашли пользователя в БД - возвращаем юзера по ИД, иначе новый юзер
                 User newUser = new User();
                 newUser.setId(id);
-                newUser.setName((String) map.get("name"));
+                newUser.setLogin((String) map.get("login"));
                 newUser.setEmail((String) map.get("email"));
                 newUser.setGender((String) map.get("gender"));
                 newUser.setLocale((String) map.get("locale"));

@@ -46,6 +46,9 @@ public class Product{
     @Min(0)
     private int amount;
 
+    @Min(0)
+    private int popularity;
+
 
     @Override
     public String toString() {
@@ -72,5 +75,9 @@ public class Product{
     @Override
     public int hashCode() {
         return Objects.hash(id, name, description, price, imagePath, category);
+    }
+
+    public void addPopularity(int popularity){
+        this.popularity+=popularity;
     }
 }

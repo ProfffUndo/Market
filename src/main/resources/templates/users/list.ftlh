@@ -11,7 +11,7 @@
             <div class="card-body">
                 <div class="child" style="width: 70%; float: left">
                     <a href="/profile/${user.id}">
-                        <div class="card-title" style="font-size: 20px; font-weight: bold;">${user.name}</div>
+                        <div class="card-title" style="font-size: 20px; font-weight: bold;">${user.getLogin}</div>
                     </a>
                     <div class="card-text">${user.email}</div>
                 </div>
