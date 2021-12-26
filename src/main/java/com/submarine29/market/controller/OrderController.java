@@ -42,9 +42,6 @@ public class OrderController {
     @GetMapping("get_order/{orderId}")
     public String showOrder(@PathVariable("orderId") Order order, @AuthenticationPrincipal User currentUser,
                             Model model) {
-        if (!currentUser.isManager()) {
-            return "error/error";
-        }
         model.addAttribute("order", order);
         return "order/show";
     }

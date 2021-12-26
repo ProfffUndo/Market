@@ -35,11 +35,11 @@ public class BasketService {
             List<Order> usersOrders = orderRepo.findByUser(user);
             Product product = productRepo.findById(productId).get();
             Iterator<Order> iter = usersOrders.listIterator();
-            Order currentOrder;
+            Order currentOrder = null;
 
-            while ((currentOrder = iter.next()).getStatus() != Status.NEW && iter.hasNext()) {
+            while ((iter.hasNext()&& (currentOrder = iter.next()).getStatus() != Status.NEW )) {
             }
-            if (currentOrder.getStatus() != Status.NEW) {
+            if (currentOrder==null || currentOrder.getStatus() != Status.NEW) {
                 OrderItem item = new OrderItem();
                 currentOrder = new Order();
                 List<OrderItem> itemList = new ArrayList<>();

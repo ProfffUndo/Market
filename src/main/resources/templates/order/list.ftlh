@@ -21,9 +21,9 @@
         <#list orders as order>
             <tr>
                 <td>${order.id}</td>
-                <td>${order.deliveryAddress}</td>
-                <td>${order.orderDate}</td>
-                <td>${order.comment}</td>
+                <td><#if order.deliveryAddress ??> ${order.deliveryAddress} <#else></#if> </td>
+                <td><#if order.orderDate ??> ${order.orderDate} <#else></#if> </td>
+                <td><#if order.comment ??> ${order.comment} <#else></#if> </td>
                 <td>
                     <#if isManager>
                         <div class="dropdown">

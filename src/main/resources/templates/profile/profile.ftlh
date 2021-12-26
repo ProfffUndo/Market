@@ -7,7 +7,7 @@
 
     <label for="nameInput">ФИО</label>
     <input id="nameInput" type="text" class="form-control"
-           value="<#if currentUser??>${currentUser.getLogin()}</#if>"
+           value="<#if currentUser??>${currentUser.name}</#if>"
            placeholder="ФИО" readonly="readonly">
     <br/>
     <label for="emailInput">Email</label>

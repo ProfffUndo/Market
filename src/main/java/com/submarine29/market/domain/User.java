@@ -34,8 +34,8 @@ public class User implements UserDetails {
 
     @Id
     private Long id;
-    private String firstName;//не ставлю NotBlank, так как иначе не добавить товары в корзину
-    private String secondName;
+    @NotBlank
+    private String name;
     @URL(message = "Введите ссылку на фотографию")
     private String userpic; //Почему String?
     @Email

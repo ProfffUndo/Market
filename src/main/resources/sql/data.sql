@@ -112,8 +112,9 @@ insert into product (id, description, image_path, name, price, category_id, amou
      'https://images.wbstatic.net/c516x688/new/47400000/47401416-1.avif','Ручка ANCORA 1919',264810,10,2,0);
 
 
+/*
+На случай если захотим вернуть свою реализацию пользователей
 
---все заказы привязаны к юзерам, так что добавим одного для примера
 insert into usr (id, email,login, first_name,second_name, gender, last_visit, locale,  password, phone,  userpic)
 values (0,'devil@hell.com','devil','Сатана','Великий','муж', '2021-11-22 17:51:16.479536','ru','devil',null,null);
 
@@ -143,13 +144,11 @@ insert into user_role (user_id, roles) VALUES (5,'USER');
 insert into user_role (user_id, roles) VALUES (6,'USER');
 insert into user_role (user_id, roles) VALUES (7,'USER');
 insert into user_role (user_id, roles) VALUES (8,'USER');
-
 insert into user_role (user_id, roles) VALUES (1,'MANAGER');
 insert into user_role (user_id, roles) VALUES (2,'MANAGER');
 insert into user_role (user_id, roles) VALUES (3,'MANAGER');
 insert into user_role (user_id, roles) VALUES (4,'MANAGER');
 insert into user_role (user_id, roles) VALUES (5,'MANAGER');
-
 insert into user_role (user_id, roles) VALUES (1,'ADMIN');
 insert into user_role (user_id, roles) VALUES (2,'ADMIN');
 insert into user_role (user_id, roles) VALUES (3,'ADMIN');
@@ -160,6 +159,16 @@ insert into orders values (2,'','Ульяновская область,ПГТ С
 insert into orders values (3,'звонить в домофон','г.Москва, Каширское шоссе, д13 к1 кв 32',TIMESTAMP '2021-12-29 18:00:00','PAID',8);
 insert into orders values (4,'','г.Улан-Удэ, ул.Чкалова, д49 кв 13',TIMESTAMP '2022-02-18 10:00:00','SENT',0);
 insert into orders values (5,'звонить в колокол','г.Ярославль, ул.Ленина, д60В кв 73',TIMESTAMP '2021-12-24 17:30:00','PAID',4);
+ */
+
+--все заказы привязаны к юзерам, так что добавим одного для примера
+insert into usr values (0,'example_devil@hell.com',null,TIMESTAMP '2021-11-22 17:51:16.479536','ru',null,'Сатана',null,null,null);
+
+insert into orders values (1,'заранее позвонить','Мурманская область,городской округ Александровск, Оленья Губа, д3',TIMESTAMP '2021-12-31 15:30:00','PAID',0);
+insert into orders values (2,'','Ульяновская область,ПГТ Старая Кулатка, д31',TIMESTAMP '2022-01-04 12:00:00','SENT',0);
+insert into orders values (3,'звонить в домофон','г.Москва, Каширское шоссе, д13 к1 кв 32',TIMESTAMP '2021-12-29 18:00:00','PAID',0);
+insert into orders values (4,'','г.Улан-Удэ, ул.Чкалова, д49 кв 13',TIMESTAMP '2022-02-18 10:00:00','SENT',0);
+insert into orders values (5,'звонить в колокол','г.Ярославль, ул.Ленина, д60В кв 73',TIMESTAMP '2021-12-24 17:30:00','PAID',0);
 
 insert into order_item (id, order_id, product_id, count) values (1,2,1,1);
 insert into order_item (id, order_id, product_id, count) values (2,1,1,2);
