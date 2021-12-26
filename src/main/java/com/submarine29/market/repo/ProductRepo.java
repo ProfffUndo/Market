@@ -28,4 +28,10 @@ public interface ProductRepo extends JpaRepository<Product,Long> {
 
     @Query(value = "SELECT * FROM Product where Product.price >= :fromp and Product.price <= :to and Product.category_id = :category_id", nativeQuery = true)
     Page<Product> findAllFromToPriceAndCategory (Pageable pageable, @Param("fromp") double from, @Param("to") double to, @Param("category_id") long categoryId);
+
+    @Query(value = "SELECT * FROM Product where Product.price >= :fromp and Product.price <= :to and Product.category_id = :category_id and product.name ILIKE '%'|| :product_name || '%'", nativeQuery = true)
+    Page<Product> findAllFromToPriceAndCategoryAndSearch (Pageable pageable, @Param("fromp") double from, @Param("to") double to, @Param("category_id") long categoryId, @Param("product_name") String name);
+
+    @Query(value = "SELECT * FROM Product where Product.price >= :fromp and Product.price <= :to and product.name ILIKE '%'|| :product_name || '%'", nativeQuery = true)
+    Page<Product> findAllFromToPriceAndSearch (Pageable pageable, @Param("fromp") double from, @Param("to") double to, @Param("product_name") String name);
 }

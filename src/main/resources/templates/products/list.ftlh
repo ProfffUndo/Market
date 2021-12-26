@@ -13,13 +13,18 @@
                    placeholder="Название" name="name">
             </br>
             <label for="priceFrom">Цена от:</label>
-            <input id="priceFrom" type="text" pattern="[1-9]\d{1, 10}*(\.\d{1,2})?"
-                   class="form-control"
+            <input id="priceFrom" type="number" min="0" max="1000000000"
+                   class="form-control ${(priceError??)?string('is-invalid','')}"
                    value="<#if dto.priceFrom??>${dto.priceFrom}</#if>"
                    placeholder="От" name="priceFrom">
+            <#if priceError??>
+                <div class="invalid-feedback">
+                    ${priceError}
+                </div>
+            </#if>
             </br>
             <label for="priceTo">Цена до:</label>
-            <input id="priceTo" type="text" pattern="[1-9]\d{1, 10}*(\.\d{1,2})?"
+            <input id="priceTo" type="number" min="0" max="1000000000"
                    class="form-control"
                    value="<#if dto.priceTo??>${dto.priceTo}</#if>"
                    placeholder="До" name="priceTo">

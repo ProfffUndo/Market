@@ -20,6 +20,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -47,6 +50,10 @@ public class ProductController {
             @RequestParam("name") Optional<String> name
             ) {
         //String category = null;
+        if (from.isPresent() && to.isPresent() && from.get() > to.get()){
+            model.addAttribute("priceError", "Цена от должна быть меньше цены до");
+        }
+
         if (sort.isPresent()) {
             switch (sort.get()) {
                 case ("priceup"):
@@ -64,18 +71,26 @@ public class ProductController {
         if (pageable.getPageSize() > 50 || pageable.getPageSize() < 1) {
             return "redirect:/products/?page=0&size=50";
         } else {
-            if (categoryId.isEmpty()) {
+            if (categoryId.isEmpty() && name.isEmpty()) {
                 model.addAttribute("productsPage", productRepo
                         .findAllFromToPrice(pageable, from.orElse(0.00), to.orElse(Double.MAX_VALUE)));
             }
-            else{
+            else if (categoryId.isPresent() && name.isEmpty()){
                 //category = categoryRepo.findById(categoryId.get()).get().getName();
                 model.addAttribute("productsPage", productRepo
                         .findAllFromToPriceAndCategory(pageable, from.orElse(0.00), to.orElse(Double.MAX_VALUE), categoryId.get()));
                 //model.addAttribute("categoryOld", category.getName());
             }
+            else if (categoryId.isEmpty()){
+                model.addAttribute("productsPage", productRepo
+                        .findAllFromToPriceAndSearch(pageable, from.orElse(0.00), to.orElse(Double.MAX_VALUE), name.get()));
+            }
+            else {
+                model.addAttribute("productsPage", productRepo
+                        .findAllFromToPriceAndCategoryAndSearch(pageable, from.orElse(0.00), to.orElse(Double.MAX_VALUE), categoryId.get(),name.get()));
+            }
         }
-        DataForFindDTO dto = new DataForFindDTO("", from.orElse(null), to.orElse(null), categoryId.orElse(null), sort.orElse(null));
+        DataForFindDTO dto = new DataForFindDTO(name.orElse(""), from.orElse(null), to.orElse(null), categoryId.orElse(null), sort.orElse(null));
         model.addAttribute("categories", categoryRepo.findAll());
         model.addAttribute("dto", dto);
         String params = "";
@@ -90,7 +105,7 @@ public class ProductController {
     }
 
     @PostMapping("find/find/find")
-    public String productsFind(@ModelAttribute("name") String name,
+    public String productsFind(                               @ModelAttribute("name") String name,
                                @ModelAttribute("priceFrom") String priceFrom,
                                @ModelAttribute("priceTo") String priceTo,
                                @ModelAttribute("category") String category,
@@ -103,17 +118,17 @@ public class ProductController {
             categoryId = categoryRepo.findByName(category).getId();
         }
         if (!Objects.equals(priceFrom, "")){
-            priceFromDouble = Double.parseDouble(priceFrom);
+            priceFromDouble = Double.parseDouble(priceFrom.replaceAll(" ",""));
         }
         if (!Objects.equals(priceTo, "")){
-            priceToDouble = Double.parseDouble(priceTo);
-        }
-        if (priceFromDouble != null && priceToDouble != null && priceFromDouble > priceToDouble){
-            return "error/error"; //временно
+            priceToDouble = Double.parseDouble(priceTo.replaceAll(" ",""));
         }
 
-        return "redirect:/products?" + new DataForFindDTO(name, priceFromDouble
+        DataForFindDTO data = new DataForFindDTO(name, priceFromDouble
                 , priceToDouble, categoryId, sort);
+        String nameFromDTO = data.getName();
+
+        return "redirect:/products?" + data;
     }
 
     @GetMapping("{id}")

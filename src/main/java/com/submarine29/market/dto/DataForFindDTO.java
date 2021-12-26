@@ -4,6 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -27,7 +30,8 @@ public class DataForFindDTO {
     public String getUrlForSort() {
         StringBuilder sb = new StringBuilder();
         if (name != null && !name.equals("")) {
-            sb.append("name=").append(name).append("&");
+            byte ptext[] = name.getBytes();
+            sb.append("name=").append(new String(ptext, StandardCharsets.UTF_8)).append("&");
         }
         if (priceFrom != null) {
             sb.append("from=").append(priceFrom).append("&");
