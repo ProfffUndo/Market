@@ -32,7 +32,8 @@
             <div class="form-group">
                 <label for="categorySelect">Категория товара</label>
                 <select class="form-control" id="categorySelect" name="category">
-                    <option selected><#if dto.category??>${dto.category}</#if></option>
+                    <option></option>
+                    <#if dto.category??><option selected><#if dto.category??>${dto.category}</#if></option></#if>
                     <#list categories as category>
                         <option>${category.name}</option>
                     </#list>
