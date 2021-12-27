@@ -64,11 +64,17 @@ public class User implements UserDetails {
     private List<Order> orders;
 
     public boolean isAdmin() {
-        return roles.contains(Role.ADMIN);
+        if (roles != null) {
+            return roles.contains(Role.ADMIN);
+        }
+        return false;
     }
 
     public boolean isManager() {
-        return roles.contains(Role.MANAGER);
+        if (roles != null) {
+            return roles.contains(Role.MANAGER);
+        }
+        return false;
     }
 
     @Override
