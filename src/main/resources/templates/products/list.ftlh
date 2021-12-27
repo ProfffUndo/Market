@@ -45,6 +45,8 @@
 
 <@c.page>
 
+    <div style="margin-left: 20%">
+
     <#if user?? && isManager>
         <div>
             <form method="get" style="display: inline-block">
