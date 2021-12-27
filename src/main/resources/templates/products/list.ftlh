@@ -45,6 +45,8 @@
 
 <@c.page>
 
+    <div style="margin-left: 20%">
+
     <#if user?? && isManager>
         <div>
             <form method="get" style="display: inline-block">
@@ -65,6 +67,9 @@
         <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
             <a class="dropdown-item" href="${urlForSort}&sort=priceup">По возрастанию цены</a>
             <a class="dropdown-item" href="${urlForSort}&sort=pricedown">По убыванию цены</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="${urlForSort}&sort=popularityup">По возрастанию популярности</a>
+            <a class="dropdown-item" href="${urlForSort}&sort=popularitydown">По убыванию популярности</a>
         </div>
     </div>
 
@@ -98,5 +103,6 @@
             <br/>
         </#list>
         <@p.pager url productsPage/>
+        </div>
     </div>
 </@c.page>
