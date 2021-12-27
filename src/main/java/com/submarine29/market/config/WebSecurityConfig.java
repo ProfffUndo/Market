@@ -1,6 +1,5 @@
 package com.submarine29.market.config;
 
-import com.submarine29.market.domain.Role;
 import com.submarine29.market.domain.User;
 import com.submarine29.market.repo.UserDetailsRepo;
 import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso;
@@ -13,8 +12,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
 
 @Configuration
 @EnableWebSecurity
@@ -25,8 +22,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                    .mvcMatchers("/", "/products").permitAll() //Разрещаем заходить на главную всем
-                    .anyRequest().authenticated() //По другим запросам только с аунтификацией
+                .mvcMatchers("/", "/products", "/products/new").permitAll() //Разрещаем заходить на главную всем
+                .mvcMatchers("/products").permitAll()
+                .anyRequest().authenticated() //По другим запросам только с аунтификацией
                 .and()
                     .logout()
                     .permitAll()
@@ -36,8 +34,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public PrincipalExtractor principalExtractor(UserDetailsRepo userDetailsRepo) {
-        Set<Role> roleSet = new HashSet<>();
-        roleSet.add(Role.USER);
         return map -> {
             String stringId = (String) map.get("sub");
             Long id = Long.parseLong(stringId.substring(8)) ; //Получаем ID
@@ -49,7 +45,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 newUser.setGender((String) map.get("gender"));
                 newUser.setLocale((String) map.get("locale"));
                 newUser.setUserpic((String) map.get("picture"));
-                newUser.setRoles(roleSet);
 
                 return newUser;
             });

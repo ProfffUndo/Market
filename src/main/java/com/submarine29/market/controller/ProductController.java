@@ -1,6 +1,5 @@
 package com.submarine29.market.controller;
 
-import com.submarine29.market.domain.Category;
 import com.submarine29.market.domain.Product;
 import com.submarine29.market.dto.DataForFindDTO;
 import com.submarine29.market.services.ValidationService;
@@ -17,11 +16,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
-import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -60,6 +57,13 @@ public class ProductController {
                     break;
                 case ("pricedown"):
                     pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(),Sort.by("price").descending());
+                    break;
+
+                case ("popularityup"):
+                    pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(),Sort.by("popularity").ascending());
+                    break;
+                case ("popularitydown"):
+                    pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(),Sort.by("popularity").descending());
                     break;
 
                 default:
