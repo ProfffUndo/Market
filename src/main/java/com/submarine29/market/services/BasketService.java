@@ -161,4 +161,11 @@ public class BasketService {
             item.getProduct().addPopularity(item.getCount());
         }
     }
+
+    public static void decreaseAmountOfProduct(Order order){
+        for(OrderItem item:order.getOrderItems())
+        {
+            item.getProduct().setAmount( item.getProduct().getAmount()- item.getCount());
+        }
+    }
 }
