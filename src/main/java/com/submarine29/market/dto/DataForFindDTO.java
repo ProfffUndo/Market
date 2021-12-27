@@ -1,5 +1,6 @@
 package com.submarine29.market.dto;
 
+import com.submarine29.market.domain.Category;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,6 +17,32 @@ public class DataForFindDTO {
     private Double priceTo;
     private Long categoryId;
     private String sort;
+    private Category category;
+
+    public String getPriceFrom() {
+        if (priceFrom != null) {
+            String priceFromString = priceFrom + "";
+            priceFromString = priceFromString.substring(0, priceFromString.lastIndexOf("."));
+            return priceFromString;
+        }
+        return "";
+    }
+
+    public String getPriceTo() {
+        if (priceTo != null) {
+            String priceToString = priceTo + "";
+            priceToString = priceToString.substring(0, priceToString.lastIndexOf( "."));
+            return priceToString;
+        }
+        return "";
+    }
+
+    public String getCategory() {
+        if (category != null) {
+            return category.getName();
+        }
+        return "";
+    }
 
     @Override
     public String toString() {
