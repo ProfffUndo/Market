@@ -33,7 +33,6 @@ public class Product{
     @Size(min = 10, max = 4000)
     private String description;
     private double price; //Валидируется на хосте в upsert_product на 25 строке.
-    @URL(message = "Введите ссылку на фотографию товара") //Написать regex
     private String imagePath;
     @ManyToOne
     @JsonIgnore

@@ -2,7 +2,7 @@
 <#import '../components/upsert_product.ftlh' as up>
 
 <@c.page>
-    <form action="/products/new" method="POST">
+    <form action="/products/new" method="POST" enctype="multipart/form-data">
         <@up.upsert/>
         <input type="submit" class="btn btn-primary" value="Добавить товар">
     </form>

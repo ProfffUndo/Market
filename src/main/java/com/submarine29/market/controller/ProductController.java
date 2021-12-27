@@ -155,13 +155,14 @@ public class ProductController {
     @PostMapping("/new")
     public String create(@AuthenticationPrincipal User user,
                          @ModelAttribute("categoryName") String categoryName,
+                         @RequestParam("image") MultipartFile image,
                          @Valid Product product,
                          BindingResult bindingResult,
                          Model model) {
         if (!user.isManager()) {
             return "error/error";
         }
-        return validationService.createUpsertErrorModel("products/new", categoryName, product, bindingResult, model,true);
+        return validationService.createUpsertErrorModel("products/new", categoryName, image, product, bindingResult, model,true);
     }
 
     @GetMapping("{id}/edit")
@@ -181,13 +182,14 @@ public class ProductController {
     @PostMapping("{id}/edit")
     public String update(@AuthenticationPrincipal User user, 
                          @ModelAttribute("categoryName") String categoryName,
+                         @RequestParam("image") MultipartFile image,
                          @Valid Product product,
                          BindingResult bindingResult,
                          Model model) {
         if (!user.isManager()) {
             return "error/error";
         }
-        return validationService.createUpsertErrorModel("products/edit", categoryName, product, bindingResult, model,false);
+        return validationService.createUpsertErrorModel("products/edit", categoryName, image, product, bindingResult, model,false);
     }
 
     @PostMapping("{id}/delete")

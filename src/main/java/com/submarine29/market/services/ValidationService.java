@@ -9,7 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,6 +24,7 @@ public class ValidationService {
     private ProductRepo productRepo;
 
     public String createUpsertErrorModel(String errorUrl, String categoryName,
+                                          MultipartFile image,
                                           Product product,
                                           BindingResult bindingResult,
                                           Model model, boolean isNew) {
@@ -43,6 +47,22 @@ public class ValidationService {
             model.mergeAttributes(errorsMap);
             return errorUrl;
         }
+
+       // String imagePath;
+        if (!image.isEmpty())
+        {
+            try {
+                //String orgName = image.getOriginalFilename();
+                //String name=orgName.substring(orgName.lastIndexOf("\\")+1,orgName.length());
+                String imagePath="product_"+product.getId();
+                File file1= File.createTempFile(imagePath,".jpg");
+                image.transferTo(file1);
+                product.setImagePath(file1.getName());
+            } catch (IOException e) {
+                return errorUrl;
+            }
+        }
+
         product.setCategory(category);
         productRepo.save(product);
         model.addAttribute("product", product);

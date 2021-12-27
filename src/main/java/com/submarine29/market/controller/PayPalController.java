@@ -47,7 +47,6 @@ public class PayPalController {
                     return "redirect:"+link.getHref();
                 }
             }
-
         } catch (PayPalRESTException e) {
 
             e.printStackTrace();

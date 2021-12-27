@@ -36,12 +36,16 @@
         </div>
     </#if>
     <br/>
-    <label for="imgInput">Введите ссылку на картинку</label>
-    <input id="imgInput" type="text"
-           class="form-control ${(imagePathError??)?string('is-invalid','')}"
-           value="<#if product??>${product.imagePath}</#if>"
-           placeholder="Картинка" name="imagePath">
-    <#if priceError??>
+    <div class="form-group">
+        <label for="exampleFormControlFile1">Выберите фотографию товара</label>
+        <input type="file" name="image" class="form-control-file" id="exampleFormControlFile1">
+    </div>
+<#--    <label for="imgInput">Введите ссылку на картинку</label>-->
+<#--    <input id="imgInput" type="text"-->
+<#--           class="form-control ${(imagePathError??)?string('is-invalid','')}"-->
+<#--           value="<#if product??>${product.imagePath}</#if>"-->
+<#--           placeholder="Картинка" name="imagePath">-->
+    <#if imagePathError??>
         <div class="invalid-feedback">
             ${imagePathError}
         </div>
