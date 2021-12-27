@@ -1,5 +1,6 @@
 package com.submarine29.market.controller;
 
+import com.submarine29.market.domain.Category;
 import com.submarine29.market.domain.Product;
 import com.submarine29.market.dto.DataForFindDTO;
 import com.submarine29.market.services.ValidationService;
@@ -71,6 +72,7 @@ public class ProductController {
                     break;
             }
         }
+        Category category = null;
         if (pageable.getPageSize() > 50 || pageable.getPageSize() < 1) {
             return "redirect:/products/?page=0&size=50";
         } else {
@@ -81,8 +83,10 @@ public class ProductController {
             else if (categoryId.isPresent() && name.isEmpty()){
                 //category = categoryRepo.findById(categoryId.get()).get().getName();
                 model.addAttribute("productsPage", productRepo
-                        .findAllFromToPriceAndCategory(pageable, from.orElse(0.00), to.orElse(Double.MAX_VALUE), categoryId.get()));
+                        .findAllFromToPriceAndCategory(pageable, from.orElse(0.00),
+                                to.orElse(Double.MAX_VALUE), categoryId.get()));
                 //model.addAttribute("categoryOld", category.getName());
+                category = categoryRepo.findById(categoryId.get()).get();
             }
             else if (categoryId.isEmpty()){
                 model.addAttribute("productsPage", productRepo
@@ -90,10 +94,13 @@ public class ProductController {
             }
             else {
                 model.addAttribute("productsPage", productRepo
-                        .findAllFromToPriceAndCategoryAndSearch(pageable, from.orElse(0.00), to.orElse(Double.MAX_VALUE), categoryId.get(),name.get()));
+                        .findAllFromToPriceAndCategoryAndSearch(pageable, from.orElse(0.00),
+                                to.orElse(Double.MAX_VALUE), categoryId.get(), name.get()));
+                category = categoryRepo.findById(categoryId.get()).get();
             }
         }
-        DataForFindDTO dto = new DataForFindDTO(name.orElse(""), from.orElse(null), to.orElse(null), categoryId.orElse(null), sort.orElse(null));
+        DataForFindDTO dto = new DataForFindDTO(name.orElse(""), from.orElse(null), to.orElse(null),
+                categoryId.orElse(null), sort.orElse(null), category);
         model.addAttribute("categories", categoryRepo.findAll());
         model.addAttribute("dto", dto);
         String params = "";
@@ -128,7 +135,7 @@ public class ProductController {
         }
 
         DataForFindDTO data = new DataForFindDTO(name, priceFromDouble
-                , priceToDouble, categoryId, sort);
+                , priceToDouble, categoryId, sort, null);
         String nameFromDTO = data.getName();
 
         return "redirect:/products?" + data;
