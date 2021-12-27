@@ -41,7 +41,7 @@
            class="form-control ${(imagePathError??)?string('is-invalid','')}"
            value="<#if product??>${product.imagePath}</#if>"
            placeholder="Картинка" name="imagePath">
-    <#if priceError??>
+    <#if imagePathError??>
         <div class="invalid-feedback">
             ${imagePathError}
         </div>

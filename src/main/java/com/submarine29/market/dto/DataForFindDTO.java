@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 
 @Data
 @AllArgsConstructor
@@ -41,7 +40,7 @@ public class DataForFindDTO {
         if (category != null) {
             return category.getName();
         }
-        return "";
+        return null;
     }
 
     @Override
