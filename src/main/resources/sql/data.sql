@@ -109,7 +109,7 @@ insert into product (id, description, image_path, name, price, category_id, amou
      'https://images.wbstatic.net/c516x688/new/9260000/9262630-1.jpg','Карандаш простой GrafArt Малевичъ',284,10,100,0);
 insert into product (id, description, image_path, name, price, category_id, amount, popularity) values
     (30,'Один из самых знаменитых символов Италии, действующий вулкан Везувий, находящийся близ Неаполя. Печальная известность к нему пришла благодаря тому, что при извержениях под лавой погиб античный римский город Помпеи, а в 1944 году, Сан-Себастьяно.Извержение выбросило облако камней, пепла и вулканических газов на высоту 33 км, и более 1000 человек погибли. Компания Ancora представляет ручку Vezuvio, посвященную этому одному из наиболее опасных и загадочных вулканов.Ограниченная серия из 88 перьевых ручек и 88 роллеров. Материал: акриловая смола, позолота, фрагмент лавы, кольца на корпусе - формовочное литье, перо из золота 18 К. Коллекции Ancora сочетают в себе техническое и эстетическое совершенство. Отказ от массовости в пользу ручного труда обеспечил эксклюзивные решения и тщательно продуманные детали для каждой модели.',
-     'https://images.wbstatic.net/c516x688/new/47400000/47401416-1.avif','Ручка ANCORA 1919',264810,10,2,0);
+     'https://images.wbstatic.net/c516x688/new/47400000/47401416-1.avif','Ручка ANCORA 1919',264810,10,20,0);
 
 
 /*
@@ -164,11 +164,16 @@ insert into orders values (5,'звонить в колокол','г.Яросла
 --все заказы привязаны к юзерам, так что добавим одного для примера
 insert into usr values (0,'example_devil@hell.com',null,TIMESTAMP '2021-11-22 17:51:16.479536','ru',null,'Сатана',null,null,null);
 
-insert into orders values (1,'заранее позвонить','Мурманская область,городской округ Александровск, Оленья Губа, д3',TIMESTAMP '2021-12-31 15:30:00','PAID',0);
-insert into orders values (2,'','Ульяновская область,ПГТ Старая Кулатка, д31',TIMESTAMP '2022-01-04 12:00:00','SENT',0);
-insert into orders values (3,'звонить в домофон','г.Москва, Каширское шоссе, д13 к1 кв 32',TIMESTAMP '2021-12-29 18:00:00','PAID',0);
-insert into orders values (4,'','г.Улан-Удэ, ул.Чкалова, д49 кв 13',TIMESTAMP '2022-02-18 10:00:00','SENT',0);
-insert into orders values (5,'звонить в колокол','г.Ярославль, ул.Ленина, д60В кв 73',TIMESTAMP '2021-12-24 17:30:00','PAID',0);
+insert into orders(id, comment, delivery_address, order_date, payment_id, status, user_id) values
+    (1,'заранее позвонить','Мурманская область,городской округ Александровск, Оленья Губа, д3',TIMESTAMP '2021-12-31 15:30:00','','PAID',0);
+insert into orders(id, comment, delivery_address, order_date, payment_id, status, user_id) values
+    (2,'','Ульяновская область,ПГТ Старая Кулатка, д31',TIMESTAMP '2022-01-04 12:00:00','','SENT',0);
+insert into orders(id, comment, delivery_address, order_date, payment_id, status, user_id) values
+    (3,'звонить в домофон','г.Москва, Каширское шоссе, д13 к1 кв 32',TIMESTAMP '2021-12-29 18:00:00','','PAID',0);
+insert into orders(id, comment, delivery_address, order_date, payment_id, status, user_id) values
+    (4,'','г.Улан-Удэ, ул.Чкалова, д49 кв 13',TIMESTAMP '2022-02-18 10:00:00','','SENT',0);
+insert into orders(id, comment, delivery_address, order_date, payment_id, status, user_id) values
+    (5,'звонить в колокол','г.Ярославль, ул.Ленина, д60В кв 73',TIMESTAMP '2021-12-24 17:30:00','','PAID',0);
 
 insert into order_item (id, order_id, product_id, count) values (1,2,1,1);
 insert into order_item (id, order_id, product_id, count) values (2,1,1,2);

@@ -38,4 +38,6 @@ public class Order {
 
     @ManyToOne
     private User user;
+
+    private String paymentId;
 }
