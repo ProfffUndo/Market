@@ -17,7 +17,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.nio.charset.StandardCharsets;
@@ -169,6 +168,8 @@ public class ProductController {
         if (!user.isManager()) {
             return "error/error";
         }
+        categoryName = new String(categoryName.getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8);
+        product.changeUTF();
         return validationService.createUpsertErrorModel("products/new", categoryName, product, bindingResult, model,true);
     }
 
@@ -195,6 +196,8 @@ public class ProductController {
         if (!user.isManager()) {
             return "error/error";
         }
+        categoryName = new String(categoryName.getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8);
+        product.changeUTF();
         return validationService.createUpsertErrorModel("products/edit", categoryName, product, bindingResult, model,false);
     }
 
