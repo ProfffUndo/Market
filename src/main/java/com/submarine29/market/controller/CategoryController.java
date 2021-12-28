@@ -1,7 +1,6 @@
 package com.submarine29.market.controller;
 
 import com.submarine29.market.domain.Category;
-import com.submarine29.market.domain.Role;
 import com.submarine29.market.domain.User;
 import com.submarine29.market.repo.CategoryRepo;
 import org.springframework.beans.factory.annotation.Autowired;
