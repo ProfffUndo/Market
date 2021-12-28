@@ -40,6 +40,7 @@ public class CategoryController {
         if (!user.isManager()) {
             return "error/error";
         }
+        category.changeUTF();
         if (bindingResult.hasErrors()) {
             model.addAttribute("category", category);
             Map<String, String> errorsMap = new HashMap<>(ControllerUtil.getErrors(bindingResult));

@@ -9,6 +9,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @Data
@@ -28,6 +29,10 @@ public class Category{
     @JoinColumn(name = "category_id")
     @JsonIgnore
     private List<Product> products;
+
+    public void changeUTF() {
+        name = new String(name.getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8);
+    }
 
     @Override
     public String toString() {
