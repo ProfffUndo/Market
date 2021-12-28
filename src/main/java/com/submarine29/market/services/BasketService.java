@@ -168,4 +168,11 @@ public class BasketService {
             item.getProduct().setAmount( item.getProduct().getAmount()- item.getCount());
         }
     }
+
+    public static void increaseAmountOfProduct(Order order){
+        for(OrderItem item:order.getOrderItems())
+        {
+            item.getProduct().setAmount( item.getProduct().getAmount()+ item.getCount());
+        }
+    }
 }
