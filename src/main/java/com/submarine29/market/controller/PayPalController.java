@@ -3,6 +3,7 @@ package com.submarine29.market.controller;
 import com.submarine29.market.domain.Order;
 import com.submarine29.market.domain.OrderItem;
 import com.submarine29.market.domain.Status;
+import com.submarine29.market.repo.OrderRepo;
 import com.submarine29.market.services.BasketService;
 import com.submarine29.market.services.PayPalService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,9 @@ import java.util.List;
 @Controller
 @RequestMapping("/basket")
 public class PayPalController {
+    @Autowired
+    OrderRepo orderRepo;
+
     @Autowired
     PayPalService service;
 
@@ -49,6 +53,7 @@ public class PayPalController {
                 }
             }
 
+
         } catch (PayPalRESTException e) {
 
             e.printStackTrace();
@@ -70,6 +75,7 @@ public class PayPalController {
             Payment payment = service.executePayment(paymentId, payerId);
             System.out.println(payment.toJSON());
             if (payment.getState().equals("approved")) {
+               // order.setStatus(Status.PAID);
                 return "success";
             }
         } catch (PayPalRESTException e) {

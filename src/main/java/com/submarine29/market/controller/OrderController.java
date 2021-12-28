@@ -5,6 +5,7 @@ import com.submarine29.market.domain.Status;
 import com.submarine29.market.domain.User;
 import com.submarine29.market.repo.OrderRepo;
 import com.submarine29.market.repo.UserDetailsRepo;
+import com.submarine29.market.services.BasketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -56,6 +57,8 @@ public class OrderController {
     @GetMapping("set_status/{orderId}")
     public String setStatus(@PathVariable("orderId") Order order, @RequestParam("status") String newStatus) {
         order.setStatus(Status.valueOf(newStatus));
+        if(newStatus.equals(Status.NEW.toString()))
+            BasketService.increaseAmountOfProduct(order);
         orderRepo.save(order);
         return "redirect:/orders/" + order.getUser().getId();
     }
