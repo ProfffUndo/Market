@@ -30,8 +30,8 @@ public class Product{
     private Long id;
     @Size(min = 1, max = 100)
     private String name;
-    @Column(length = 4000)
-    @Size(min = 10, max = 4000)
+    //@Column(length = 4000)
+    @Size(max = 4000)
     private String description;
     private double price; //Валидируется на хосте в upsert_product на 25 строке.
     @URL(message = "Введите ссылку на фотографию товара") //Написать regex
