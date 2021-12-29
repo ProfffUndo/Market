@@ -22,8 +22,8 @@ public class Category{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "com_seq")
     private Long id;
-    @Size(min=5, max=50)
-    @Column(unique = true) //! не применяется почему-то, выполните 148 строку в data.sql
+    @Size(min=1, max=50)
+    @Column(unique = true)
     private String name;
     @OneToMany
     @JoinColumn(name = "category_id")

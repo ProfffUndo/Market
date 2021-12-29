@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Arrays;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/orders")
@@ -38,7 +40,8 @@ public class OrderController {
             return "error/error";
         }
         if (currentUser.isManager()) {
-            model.addAttribute("statuses", Status.values());
+
+            model.addAttribute("statuses", Arrays.stream(Status.values()).filter((s)->s!=Status.NEW).collect(Collectors.toList()));
         }
         model.addAttribute("orders", user.getPaidOrders());
         return "order/list";

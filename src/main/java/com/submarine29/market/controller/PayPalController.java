@@ -32,8 +32,6 @@ public class PayPalController {
         try {
 
             BasketService.checkAmountOfProductBeforePayment(order);
-            BasketService.addPopularityToProductsFromOrder(order);
-            BasketService.decreaseAmountOfProduct(order);
 
             List<OrderItem> orderItems = order.getOrderItems();
             double total = 0.00;
@@ -84,6 +82,9 @@ public class PayPalController {
                         payment.getPayer().getPayerInfo().getShippingAddress().getPostalCode();
 
                 orderRepo.findByPaymentId(paymentId).setDeliveryAddress(deliveryAddress.replaceAll("null",""));
+
+                BasketService.addPopularityToProductsFromOrder(orderRepo.findByPaymentId(paymentId));
+                BasketService.decreaseAmountOfProduct(orderRepo.findByPaymentId(paymentId));
 
                 return "pay/success";
             }
