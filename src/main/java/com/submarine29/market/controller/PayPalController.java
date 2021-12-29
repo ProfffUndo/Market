@@ -38,7 +38,7 @@ public class PayPalController {
             List<OrderItem> orderItems = order.getOrderItems();
             double total = 0.00;
 
-            order.setStatus(Status.CONFIRMED);
+            //order.setStatus(Status.CONFIRMED);
 
             for (OrderItem orderItem : orderItems){
                 total = total + orderItem.getSum();

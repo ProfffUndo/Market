@@ -136,7 +136,7 @@ public class BasketService {
     }
 
     private void checkAmountOfProductBeforeAdd(Product product, OrderItem item) throws IllegalArgumentException{
-        if(product.getAmount()<=item.getCount())
+        if(product.getAmount()<item.getCount())
             throw new IllegalArgumentException("Товар закончился");
     }
 
