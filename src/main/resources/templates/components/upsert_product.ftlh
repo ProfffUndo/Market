@@ -61,12 +61,12 @@
             </div>
         </#if>
     </div>
-    <label for="numberImput">Введите кол-во товара на скалде</label>
+    <label for="numberImput">Введите количество товара на складе</label>
     <br/>
     <input id="numberImput" type="number" min="0" max="10000"
            class="form-control ${(amountError??)?string('is-invalid','')}"
            value="<#if product??>${product.amount}</#if>"
-           placeholder="Название" name="amount">
+           placeholder="Количество товара" name="amount">
     <#if amountError??>
         <div class="invalid-feedback">
             ${amountError}

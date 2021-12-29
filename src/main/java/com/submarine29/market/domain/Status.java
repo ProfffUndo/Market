@@ -1,5 +1,7 @@
 package com.submarine29.market.domain;
 
+import java.util.List;
+
 public enum Status {
-    NEW, CONFIRMED, PAID, SENT, DELIVERED, RETURN
+    NEW, PAID, SENT, DELIVERED
 }

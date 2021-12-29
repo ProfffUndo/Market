@@ -43,11 +43,10 @@ public class Product{
 //    @JoinColumn(name = "product_id")
 //    @JsonIgnore
 //    private List<OrderItem> orderItems;
-    @Max(10000)
-    @Min(0)
+    @Max(value = 10000, message = "Превышено ограничение на количество товара")
+    @Min(value = 0, message = "Количество товара не может быть меньше 0")
     private int amount;
 
-    @Min(0)
     private int popularity;
 
     public void changeUTF() {
