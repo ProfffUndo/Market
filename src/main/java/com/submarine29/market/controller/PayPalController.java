@@ -17,7 +17,6 @@ import com.paypal.base.rest.PayPalRESTException;
 import java.util.List;
 
 @Controller
-@RequestMapping("/basket")
 public class PayPalController {
     @Autowired
     OrderRepo orderRepo;
@@ -28,7 +27,7 @@ public class PayPalController {
     public static final String SUCCESS_URL = "pay/success";
     public static final String CANCEL_URL = "pay/cancel";
 
-    @PostMapping("/pay/{id}")
+    @PostMapping("basket/pay/{id}")
     public String payment(@PathVariable("id") Order order) {
         try {
 
@@ -42,13 +41,16 @@ public class PayPalController {
             order.setStatus(Status.CONFIRMED);
 
             for (OrderItem orderItem : orderItems){
-                total = total + orderItem.getProduct().getPrice();
+                total = total + orderItem.getSum();
             }
 
             Payment payment = service.createPayment(total, "http://localhost:8080/" + CANCEL_URL,
                     "http://localhost:8080/" + SUCCESS_URL);
+
+            order.setPaymentId(payment.getId());
+
             for(Links link:payment.getLinks()) {
-                if(link.getRel().equals("approval_url")) {
+                if(link.getRel().equalsIgnoreCase("approval_url")) {
                     return "redirect:"+link.getHref();
                 }
             }
@@ -59,24 +61,31 @@ public class PayPalController {
             e.printStackTrace();
         } catch (IllegalArgumentException e){
             return "error/error";
-           // throw new IllegalArgumentException("Недостаточно товара на складе",e);
         }
         return "redirect:/";
     }
 
-    @GetMapping(value = CANCEL_URL)
+    @GetMapping(CANCEL_URL)
     public String cancelPay() {
-        return "cancel";
+        return "pay/cancel";
     }
 
-    @GetMapping(value = SUCCESS_URL)
+    @GetMapping(SUCCESS_URL)
     public String successPay(@RequestParam("paymentId") String paymentId, @RequestParam("PayerID") String payerId) {
         try {
             Payment payment = service.executePayment(paymentId, payerId);
-            System.out.println(payment.toJSON());
+
             if (payment.getState().equals("approved")) {
-               // order.setStatus(Status.PAID);
-                return "success";
+                orderRepo.findByPaymentId(paymentId).setStatus(Status.PAID);
+
+                String deliveryAddress = payment.getPayer().getPayerInfo().getShippingAddress().getCity()+" "+
+                        payment.getPayer().getPayerInfo().getShippingAddress().getLine1()+" "+
+                        payment.getPayer().getPayerInfo().getShippingAddress().getLine2()+" "+
+                        payment.getPayer().getPayerInfo().getShippingAddress().getPostalCode();
+
+                orderRepo.findByPaymentId(paymentId).setDeliveryAddress(deliveryAddress.replaceAll("null",""));
+
+                return "pay/success";
             }
         } catch (PayPalRESTException e) {
             System.out.println(e.getMessage());

@@ -11,4 +11,6 @@ public interface OrderRepo extends JpaRepository<Order,Long> {
 
     @Override
     Optional<Order> findById(Long aLong);
+
+    Order findByPaymentId(String paymentId);
 }
